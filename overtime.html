@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاسبه اضافه کار</title>
+    <!-- فونت وزیرمتن -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css">
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --secondary: #6c757d;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+            --text: #333;
+            --light-bg: #f8f9fa;
+            --border: #dee2e6;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        * {
+            font-family: 'Vazir', Tahoma, Arial, sans-serif !important;
+            box-sizing: border-box;
+        }
+        body {
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+            color: var(--text);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+        }
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 28px;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #555;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        select, input[type="number"], input[type="time"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            transition: border 0.3s;
+            box-sizing: border-box;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 5px rgba(74,144,226,0.3);
+        }
+        .date-row {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .date-row select {
+            flex: 1;
+        }
+        .btn-today {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        .btn-today:hover {
+            background: #5a6268;
+        }
+        .holiday-hours, .time-fields, .manual-hours {
+            margin-top: 10px;
+            padding: 15px;
+            background: var(--light-bg);
+            border-radius: 8px;
+        }
+        .holiday-hours {
+            display: none;
+        }
+        .time-fields {
+            display: block;
+        }
+        .main-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .main-actions button {
+            flex: 1;
+        }
+        button {
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #3a7bd5;
+        }
+        .btn-secondary {
+            background: var(--secondary);
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .btn-danger {
+            background: var(--danger);
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .result {
+            margin-top: 20px;
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .result span {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .summary-card {
+            background: var(--light-bg);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .summary-card h4 {
+            margin: 0 0 5px 0;
+            color: var(--primary);
+        }
+        .summary-card p {
+            margin: 0;
+            font-size: 14px;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-size: 16px;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: normal;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .holiday-row {
+            background-color: #ffe6e6 !important;
+        }
+        .total {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .action-btns {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+        .edit-btn {
+            background: var(--warning);
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .edit-btn:hover {
+            background: #e0a800;
+        }
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        .settings-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #ccc;
+        }
+        .file-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .file-actions button, .file-actions label {
+            flex: 1;
+            min-width: 100px;
+            text-align: center;
+        }
+        .file-actions input[type="file"] {
+            display: none;
+        }
+        .file-label {
+            background: var(--secondary);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+        }
+        .file-label:hover {
+            background: #5a6268;
+        }
+        .month-filter {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .month-filter select {
+            flex: 1;
+        }
+        .month-filter label {
+            margin-top: 0;
+            white-space: nowrap;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            .date-row {
+                flex-wrap: wrap;
+            }
+            .date-row select {
+                flex: 1 1 30%;
+                min-width: 0;
+            }
+            .btn-today {
+                flex: 1 1 100%;
+                margin-top: 5px;
+            }
+            .main-actions {
+                flex-direction: column;
+            }
+            .main-actions button {
+                width: 100%;
+            }
+            .summary-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+            table {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 6px;
+            }
+            .file-actions {
+                flex-direction: column;
+            }
+            .file-actions button, .file-actions label {
+                width: 100%;
+            }
+            .month-filter {
+                flex-wrap: wrap;
+            }
+            .month-filter select {
+                flex: 1 1 40%;
+            }
+            .month-filter label {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🧮 محاسبه اضافه کار</h2>
+
+        <!-- انتخاب تاریخ شمسی -->
+        <label>📅 تاریخ:</label>
+        <div class="date-row">
+            <select id="daySelect"></select>
+            <select id="monthSelect"></select>
+            <select id="yearSelect"></select>
+            <button class="btn-today" onclick="setToday()">امروز</button>
+        </div>
+
+        <!-- نوع شیفت -->
+        <label>🔄 نوع شیفت:</label>
+        <select id="shiftType" onchange="onShiftChange()">
+            <option value="day">روز (۲ ساعت اضافه‌کار ثابت)</option>
+            <option value="night">شب (۲ ساعت اضافه‌کار ثابت)</option>
+            <option value="holiday">تعطیل (کل ساعات کار اضافه‌کار)</option>
+            <option value="thursday">پنجشنبه (کل ساعات کار اضافه‌کار)</option>
+        </select>
+
+        <!-- ورود دستی ساعت ورود و خروج -->
+        <div class="time-fields" id="timeFields">
+            <label>⏰ ساعت ورود و خروج (اختیاری):</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <div style="flex:1;">
+                    <label>ورود</label>
+                    <input type="time" id="startTime">
+                </div>
+                <div style="flex:1;">
+                    <label>خروج</label>
+                    <input type="time" id="endTime">
+                </div>
+            </div>
+            <small style="color:#666;">اگر وارد شود، اضافه‌کار بر اساس این ساعت‌ها محاسبه می‌شود.</small>
+        </div>
+
+        <!-- ساعت کار در تعطیل / پنجشنبه -->
+        <div id="holidayHoursDiv" class="holiday-hours">
+            <label>⏱ ساعت کار در این روز:</label>
+            <input type="number" id="holidayHours" value="8.5" step="0.5" min="0">
+            <small style="color:#666;">در صورت وارد نکردن ساعت ورود/خروج و ساعت دستی، از این مقدار استفاده می‌شود.</small>
+        </div>
+
+        <!-- ورود دستی ساعت اضافه‌کار -->
+        <div class="manual-hours">
+            <label>✍️ ساعت اضافه‌کار دستی (اختیاری):</label>
+            <input type="number" id="manualHours" value="" placeholder="مثلاً 3.5" step="0.5" min="0">
+            <small style="color:#666;">اگر عددی وارد کنید، محاسبه‌ی خودکار نادیده گرفته می‌شود.</small>
+        </div>
+
+        <!-- دکمه‌های عملیات -->
+        <div class="main-actions">
+            <button id="addBtn" onclick="addOrUpdateRecord()">➕ افزودن به لیست</button>
+            <button id="cancelEditBtn" onclick="cancelEdit()" class="btn-secondary" style="display:none;">لغو ویرایش</button>
+        </div>
+
+        <!-- نمایش محاسبه فعلی -->
+        <div class="result" id="currentCalc">
+            ساعت اضافه‌کار: <span id="hoursDisplay">2</span> ساعت<br>
+            مبلغ: <span id="amountDisplay">246,000</span> تومان
+        </div>
+
+        <!-- خلاصه آماری -->
+        <div class="section-title">📊 خلاصه آماری</div>
+        <div class="summary-grid" id="summaryGrid"></div>
+
+        <!-- فیلتر ماه برای نمایش رکوردها -->
+        <div class="section-title">📅 نمایش رکوردهای ماه</div>
+        <div class="month-filter">
+            <label for="filterMonth">ماه:</label>
+            <select id="filterMonth"></select>
+            <label for="filterYear">سال:</label>
+            <select id="filterYear"></select>
+        </div>
+
+        <!-- جدول رکوردها -->
+        <div class="section-title">📋 لیست رکوردها</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>تاریخ</th>
+                        <th>روز هفته</th>
+                        <th>شیفت</th>
+                        <th>ساعت اضافه‌کار</th>
+                        <th>مبلغ (تومان)</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="recordsBody"></tbody>
+            </table>
+        </div>
+
+        <!-- مجموع کل -->
+        <div class="total" id="totalDisplay">مجموع: ۰ تومان</div>
+
+        <!-- تنظیمات و ابزارها -->
+        <div class="settings-section">
+            <div class="section-title">⚙️ تنظیمات و ابزارها</div>
+
+            <!-- نرخ اضافه‌کار -->
+            <label>💰 نرخ هر ساعت اضافه‌کار (تومان):</label>
+            <input type="number" id="rateInput" value="123000" step="1000" min="0" onchange="updateRate()">
+
+            <!-- پشتیبان‌گیری -->
+            <label>💾 پشتیبان‌گیری و بازیابی:</label>
+            <div class="file-actions">
+                <button onclick="exportJSON()">خروجی JSON</button>
+                <label class="file-label" for="importFile">ورودی JSON</label>
+                <input type="file" id="importFile" accept=".json" onchange="importJSON(event)">
+                <button class="btn-danger" onclick="clearAll()">پاک کردن همه</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================== توابع تبدیل تاریخ شمسی ==================
+        function gregorianToJalali(gy, gm, gd) {
+            var g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+            var jy = (gy <= 1600) ? 0 : 979;
+            gy -= (gy <= 1600) ? 0 : 1600;
+            var gy2 = (gm > 2) ? (gy + 1) : gy;
+            var days = (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) - 80 + gd + g_d_m[gm - 1];
+            jy += 33 * Math.floor(days / 12053);
+            days %= 12053;
+            jy += 4 * Math.floor(days / 1461);
+            days %= 1461;
+            jy += Math.floor((days - 1) / 365);
+            if (days > 365) days = (days - 1) % 365;
+            var jm = (days < 186) ? 1 + Math.floor(days / 31) : 7 + Math.floor((days - 186) / 30);
+            var jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+            return [jy, jm, jd];
+        }
+
+        function jalaliToGregorian(jy, jm, jd) {
+            var gy = (jy <= 979) ? 621 : 1600;
+            jy -= (jy <= 979) ? 0 : 979;
+            var days = (365 * jy) + (Math.floor(jy / 33) * 8) + Math.floor(((jy % 33) + 3) / 4) + 78 + jd + ((jm < 7) ? (jm - 1) * 31 : ((jm - 7) * 30) + 186);
+            gy += 400 * Math.floor(days / 146097);
+            days %= 146097;
+            if (days > 36524) {
+                gy += 100 * Math.floor(--days / 36524);
+                days %= 36524;
+                if (days >= 365) days++;
+            }
+            gy += 4 * Math.floor(days / 1461);
+            days %= 1461;
+            gy += Math.floor((days - 1) / 365);
+            if (days > 365) days = (days - 1) % 365;
+            var gd = days + 1;
+            var sal_a = [0, 31, ((gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            var gm = 0;
+            for (var i = 0; i < 13; i++) {
+                var v = sal_a[i];
+                if (gd <= v) {
+                    gm = i;
+                    break;
+                }
+                gd -= v;
+            }
+            return [gy, gm, gd];
+        }
+
+        // ================== تقویم شمسی ==================
+        const monthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+        const daySelect = document.getElementById('daySelect');
+        const monthSelect = document.getElementById('monthSelect');
+        const yearSelect = document.getElementById('yearSelect');
+        const filterMonth = document.getElementById('filterMonth');
+        const filterYear = document.getElementById('filterYear');
+
+        // سال‌های قابل انتخاب (۱۴۰۰ تا ۱۴۱۰)
+        for (let y = 1400; y <= 1410; y++) {
+            let opt = document.createElement('option');
+            opt.value = y;
+            opt.textContent = y;
+            yearSelect.appendChild(opt);
+            let opt2 = document.createElement('option');
+            opt2.value = y;
+            opt2.textContent = y;
+            filterYear.appendChild(opt2);
+        }
+
+        monthNames.forEach((name, index) => {
+            let opt = document.createElement('option');
+            opt.value = index + 1;
+            opt.textContent = name;
+            monthSelect.appendChild(opt);
+            let opt2 = document.createElement('option');
+            opt2.value = index + 1;
+            opt2.textContent = name;
+            filterMonth.appendChild(opt2);
+        });
+
+        function updateDays() {
+            const month = parseInt(monthSelect.value);
+            const year = parseInt(yearSelect.value);
+            const daysInMonth = month <= 6 ? 31 : (month <= 11 ? 30 : (isLeapYear(year) ? 30 : 29));
+            daySelect.innerHTML = '';
+            for (let d = 1; d <= daysInMonth; d++) {
+                let opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d;
+                daySelect.appendChild(opt);
+            }
+        }
+
+        function isLeapYear(year) {
+            const gy = jalaliToGregorian(year, 12, 29)[0];
+            const next = jalaliToGregorian(year + 1, 1, 1)[0];
+            return (gy !== next);
+        }
+
+        monthSelect.addEventListener('change', updateDays);
+        yearSelect.addEventListener('change', updateDays);
+
+        // مقداردهی اولیه فیلتر
+        const today = new Date();
+        const [todayJy, todayJm, todayJd] = gregorianToJalali(today.getFullYear(), today.getMonth() + 1, today.getDate());
+        filterYear.value = todayJy;
+        filterMonth.value = todayJm;
+
+        // ================== منطق برنامه ==================
+        let RATE = parseFloat(localStorage.getItem('overtimeRate')) || 123000;
+        document.getElementById('rateInput').value = RATE;
+        let records = JSON.parse(localStorage.getItem('overtimeRecords')) || [];
+        let editingIndex = -1;
+
+        function getFilteredRecords() {
+            const selectedYear = parseInt(filterYear.value);
+            const selectedMonth = parseInt(filterMonth.value);
+            return records.filter(rec => {
+                const [y, m] = rec.date.split('/').map(Number);
+                return y === selectedYear && m === selectedMonth;
+            });
+        }
+
+        function updateRate() {
+            RATE = parseFloat(document.getElementById('rateInput').value) || 123000;
+            localStorage.setItem('overtimeRate', RATE);
+
+            // به‌روزرسانی مبلغ همه رکوردها با نرخ جدید
+            records.forEach(rec => {
+                rec.amount = rec.hours * RATE;
+            });
+            localStorage.setItem('overtimeRecords', JSON.stringify(records));
+
+            updateCurrentCalc();
+            renderTable();
+            updateSummary();
+        }
+
+        function onShiftChange() {
+            const shift = document.getElementById('shiftType').value;
+            const holidayDiv = document.getElementById('holidayHoursDiv');
+            if (shift === 'holiday' || shift === 'thursday') {
+                holidayDiv.style.display = 'block';
+            } else {
+                holidayDiv.style.display = 'none';
+            }
+            updateCurrentCalc();
+        }
+
+        function calculateOvertime() {
+            const manualInput = document.getElementById('manualHours');
+            if (manualInput.value && parseFloat(manualInput.value) > 0) {
+                return parseFloat(manualInput.value);
+            }
+
+            const shift = document.getElementById('shiftType').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            let hours = 0;
+
+            if (startTime && endTime) {
+                const start = new Date(`1970-01-01T${startTime}:00`);
+                const end = new Date(`1970-01-01T${endTime}:00`);
+                let diff = (end - start) / (1000 * 60 * 60);
+                if (diff < 0) diff += 24;
+                let regularHours = 8.5;
+                if (shift === 'night') regularHours = 6.5;
+                hours = Math.max(0, diff - regularHours);
+            } else {
+                if (shift === 'day' || shift === 'night') {
+                    hours = 2;
+                } else if (shift === 'holiday' || shift === 'thursday') {
+                    hours = parseFloat(document.getElementById('holidayHours').value) || 0;
+                }
+            }
+            return hours;
+        }
+
+        function updateCurrentCalc() {
+            const hours = calculateOvertime();
+            const amount = hours * RATE;
+            document.getElementById('hoursDisplay').textContent = hours.toFixed(2);
+            document.getElementById('amountDisplay').textContent = Math.round(amount).toLocaleString('fa-IR');
+        }
+
+        document.getElementById('shiftType').addEventListener('change', onShiftChange);
+        document.getElementById('startTime').addEventListener('input', updateCurrentCalc);
+        document.getElementById('endTime').addEventListener('input', updateCurrentCalc);
+        document.getElementById('holidayHours').addEventListener('input', updateCurrentCalc);
+        document.getElementById('manualHours').addEventListener('input', updateCurrentCalc);
+        filterMonth.addEventListener('change', () => { renderTable(); updateSummary(); });
+        filterYear.addEventListener('change', () => { renderTable(); updateSummary(); });
+
+        function setToday() {
+            const today = new Date();
+            const [jy, jm, jd] = gregorianToJalali(today.getFullYear(), today.getMonth() + 1, today.getDate());
+            yearSelect.value = jy;
+            monthSelect.value = jm;
+            updateDays();
+            daySelect.value = jd;
+            onShiftChange();
+        }
+
+        setToday();
+
+        function getSelectedDate() {
+            const day = daySelect.value.padStart(2, '0');
+            const month = monthSelect.value.padStart(2, '0');
+            const year = yearSelect.value;
+            return `${year}/${month}/${day}`;
+        }
+
+        function setFormFromRecord(rec) {
+            const [jy, jm, jd] = rec.date.split('/').map(Number);
+            yearSelect.value = jy;
+            monthSelect.value = jm;
+            updateDays();
+            daySelect.value = jd;
+
+            document.getElementById('shiftType').value = rec.shift;
+            document.getElementById('startTime').value = rec.startTime || '';
+            document.getElementById('endTime').value = rec.endTime || '';
+            document.getElementById('holidayHours').value = rec.holidayHours || 8.5;
+            document.getElementById('manualHours').value = rec.manualHours || '';
+
+            onShiftChange();
+        }
+
+        function resetForm() {
+            setToday();
+            document.getElementById('shiftType').value = 'day';
+            document.getElementById('startTime').value = '';
+            document.getElementById('endTime').value = '';
+            document.getElementById('holidayHours').value = 8.5;
+            document.getElementById('manualHours').value = '';
+            editingIndex = -1;
+            document.getElementById('addBtn').textContent = '➕ افزودن به لیست';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+            onShiftChange();
+        }
+
+        function addOrUpdateRecord() {
+            try {
+                const date = getSelectedDate();
+                const shift = document.getElementById('shiftType').value;
+                const hours = calculateOvertime();
+                const amount = hours * RATE;
+
+                const startTime = document.getElementById('startTime').value;
+                const endTime = document.getElementById('endTime').value;
+                const holidayHours = document.getElementById('holidayHours').value;
+                const manualHours = document.getElementById('manualHours').value;
+
+                const recordData = {
+                    date,
+                    shift,
+                    hours,
+                    amount,
+                    startTime,
+                    endTime,
+                    holidayHours,
+                    manualHours
+                };
+
+                if (editingIndex >= 0) {
+                    records[editingIndex] = recordData;
+                    editingIndex = -1;
+                    document.getElementById('addBtn').textContent = '➕ افزودن به لیست';
+                    document.getElementById('cancelEditBtn').style.display = 'none';
+                } else {
+                    records.push(recordData);
+                }
+
+                records.sort((a, b) => {
+                    const aParts = a.date.split('/').map(Number);
+                    const bParts = b.date.split('/').map(Number);
+                    const aNum = aParts[0] * 10000 + aParts[1] * 100 + aParts[2];
+                    const bNum = bParts[0] * 10000 + bParts[1] * 100 + bParts[2];
+                    return aNum - bNum;
+                });
+
+                localStorage.setItem('overtimeRecords', JSON.stringify(records));
+                renderTable();
+                updateSummary();
+                resetForm();
+                document.querySelector('table').scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                alert('خطا در افزودن رکورد: ' + error.message);
+                console.error(error);
+            }
+        }
+
+        function editRecord(index) {
+            // index is within filtered list; need to find actual index in records array
+            const filtered = getFilteredRecords();
+            const rec = filtered[index];
+            // find actual index by matching date, shift, hours, etc. or store actual index in data attribute
+            // Simpler: use a hidden mapping, but we can find by object reference
+            const actualIndex = records.indexOf(rec);
+            if (actualIndex === -1) return;
+            editingIndex = actualIndex;
+            setFormFromRecord(rec);
+            document.getElementById('addBtn').textContent = '💾 ثبت تغییرات';
+            document.getElementById('cancelEditBtn').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelEdit() {
+            resetForm();
+        }
+
+        function deleteRecord(index) {
+            const filtered = getFilteredRecords();
+            const rec = filtered[index];
+            const actualIndex = records.indexOf(rec);
+            if (actualIndex === -1) return;
+            if (confirm('آیا مطمئن هستید که می‌خواهید این رکورد را حذف کنید؟')) {
+                records.splice(actualIndex, 1);
+                localStorage.setItem('overtimeRecords', JSON.stringify(records));
+                renderTable();
+                updateSummary();
+                if (editingIndex === actualIndex) resetForm();
+            }
+        }
+
+        // تابع محاسبه روز هفته از تاریخ شمسی
+        function getWeekday(jalaliDateStr) {
+            const [jy, jm, jd] = jalaliDateStr.split('/').map(Number);
+            const [gy, gm, gd] = jalaliToGregorian(jy, jm, jd);
+            const date = new Date(gy, gm - 1, gd);
+            const weekdayIndex = date.getDay(); // 0=Sunday, 1=Monday, ..., 6=Saturday
+            const persianWeekdays = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'];
+            return persianWeekdays[weekdayIndex];
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('recordsBody');
+            tbody.innerHTML = '';
+            const filteredRecords = getFilteredRecords();
+            let totalHours = 0;
+            let totalAmount = 0;
+            filteredRecords.forEach((rec, index) => {
+                const shiftLabel = rec.shift === 'day' ? 'روز' :
+                                  rec.shift === 'night' ? 'شب' :
+                                  rec.shift === 'holiday' ? 'تعطیل' : 'پنجشنبه';
+                totalHours += rec.hours;
+                totalAmount += rec.amount;
+                const isHolidayOrThursday = (rec.shift === 'holiday' || rec.shift === 'thursday');
+                const rowClass = isHolidayOrThursday ? 'holiday-row' : '';
+                const weekday = getWeekday(rec.date);
+                const row = `<tr class="${rowClass}">
+                    <td>${rec.date}</td>
+                    <td>${weekday}</td>
+                    <td>${shiftLabel}</td>
+                    <td>${rec.hours.toFixed(2)}</td>
+                    <td>${Math.round(rec.amount).toLocaleString('fa-IR')}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="edit-btn" onclick="editRecord(${index})">ویرایش</button>
+                            <button class="delete-btn" onclick="deleteRecord(${index})">حذف</button>
+                        </div>
+                    </td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+            document.getElementById('totalDisplay').innerHTML = 
+                `مجموع ساعات اضافه‌کار (ماه ${monthNames[parseInt(filterMonth.value)-1]} ${filterYear.value}): ${totalHours.toFixed(2)} ساعت | مجموع مبلغ: ${Math.round(totalAmount).toLocaleString('fa-IR')} تومان`;
+        }
+
+        function updateSummary() {
+            const filteredRecords = getFilteredRecords();
+            const summary = {
+                day: { hours: 0, amount: 0 },
+                night: { hours: 0, amount: 0 },
+                holiday: { hours: 0, amount: 0 },
+                thursday: { hours: 0, amount: 0 }
+            };
+            filteredRecords.forEach(rec => {
+                if (summary[rec.shift]) {
+                    summary[rec.shift].hours += rec.hours;
+                    summary[rec.shift].amount += rec.amount;
+                }
+            });
+            const grid = document.getElementById('summaryGrid');
+            grid.innerHTML = '';
+            const labels = { day: 'روز', night: 'شب', holiday: 'تعطیل', thursday: 'پنجشنبه' };
+            for (const key in summary) {
+                const s = summary[key];
+                const card = document.createElement('div');
+                card.className = 'summary-card';
+                card.innerHTML = `<h4>${labels[key]}</h4>
+                                  <p>ساعت: ${s.hours.toFixed(2)}</p>
+                                  <p>مبلغ: ${Math.round(s.amount).toLocaleString('fa-IR')} تومان</p>`;
+                grid.appendChild(card);
+            }
+        }
+
+        function exportJSON() {
+            const dataStr = JSON.stringify(records, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `overtime-backup-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        records = imported;
+                        localStorage.setItem('overtimeRecords', JSON.stringify(records));
+                        renderTable();
+                        updateSummary();
+                        alert('اطلاعات با موفقیت بازیابی شد.');
+                    } else {
+                        alert('فرمت فایل نادرست است.');
+                    }
+                } catch (err) {
+                    alert('خطا در خواندن فایل.');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function clearAll() {
+            if (confirm('همه رکوردها پاک شوند؟ این عمل غیرقابل بازگشت است.')) {
+                records = [];
+                localStorage.removeItem('overtimeRecords');
+                renderTable();
+                updateSummary();
+                resetForm();
+            }
+        }
+
+        // مقداردهی اولیه
+        renderTable();
+        updateSummary();
+    </script>
+</body>
+</html>
