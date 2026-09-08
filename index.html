@@ -4,13 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محاسبه اضافه کار</title>
-    <!-- فونت وزیرمتن -->
-<link rel="manifest" href="manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-  }
-</script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css">
     <style>
         :root {
@@ -276,76 +269,58 @@
         .file-label:hover {
             background: #5a6268;
         }
-        .month-filter {
+        .period-filter {
             display: flex;
             gap: 10px;
             align-items: center;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
-        .month-filter select {
+        .period-filter select {
             flex: 1;
+            min-width: 150px;
         }
-        .month-filter label {
-            margin-top: 0;
-            white-space: nowrap;
+        .period-filter button {
+            width: auto;
+            padding: 10px 20px;
+        }
+        .archive-btn {
+            background: var(--success, #28a745);
+        }
+        .archive-btn:hover {
+            background: #218838;
         }
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                padding: 15px;
-            }
-            h2 {
-                font-size: 24px;
-            }
-            .date-row {
-                flex-wrap: wrap;
-            }
-            .date-row select {
-                flex: 1 1 30%;
-                min-width: 0;
-            }
-            .btn-today {
-                flex: 1 1 100%;
-                margin-top: 5px;
-            }
-            .main-actions {
-                flex-direction: column;
-            }
-            .main-actions button {
-                width: 100%;
-            }
-            .summary-grid {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            }
-            table {
-                font-size: 14px;
-            }
-            th, td {
-                padding: 6px;
-            }
-            .file-actions {
-                flex-direction: column;
-            }
-            .file-actions button, .file-actions label {
-                width: 100%;
-            }
-            .month-filter {
-                flex-wrap: wrap;
-            }
-            .month-filter select {
-                flex: 1 1 40%;
-            }
-            .month-filter label {
-                flex: 1 1 100%;
-            }
+            body { padding: 10px; }
+            .container { padding: 15px; }
+            h2 { font-size: 24px; }
+            .date-row { flex-wrap: wrap; }
+            .date-row select { flex: 1 1 30%; min-width: 0; }
+            .btn-today { flex: 1 1 100%; margin-top: 5px; }
+            .main-actions { flex-direction: column; }
+            .main-actions button { width: 100%; }
+            .summary-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+            table { font-size: 14px; }
+            th, td { padding: 6px; }
+            .file-actions { flex-direction: column; }
+            .file-actions button, .file-actions label { width: 100%; }
+            .period-filter { flex-direction: column; }
+            .period-filter select { width: 100%; }
+            .period-filter button { width: 100%; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>🧮 محاسبه اضافه کار</h2>
+
+        <!-- انتخاب دوره ماهانه -->
+        <div class="section-title">📅 دوره ماهانه (۲۸ام تا ۲۷ام)</div>
+        <div class="period-filter">
+            <label for="periodSelect">دوره جاری:</label>
+            <select id="periodSelect" onchange="onPeriodChange()"></select>
+            <button class="archive-btn" onclick="archiveAndStartNew()">📦 بایگانی و شروع دوره جدید</button>
+        </div>
 
         <!-- انتخاب تاریخ شمسی -->
         <label>📅 تاریخ:</label>
@@ -408,20 +383,11 @@
         </div>
 
         <!-- خلاصه آماری -->
-        <div class="section-title">📊 خلاصه آماری</div>
+        <div class="section-title">📊 خلاصه دوره جاری</div>
         <div class="summary-grid" id="summaryGrid"></div>
 
-        <!-- فیلتر ماه برای نمایش رکوردها -->
-        <div class="section-title">📅 نمایش رکوردهای ماه</div>
-        <div class="month-filter">
-            <label for="filterMonth">ماه:</label>
-            <select id="filterMonth"></select>
-            <label for="filterYear">سال:</label>
-            <select id="filterYear"></select>
-        </div>
-
         <!-- جدول رکوردها -->
-        <div class="section-title">📋 لیست رکوردها</div>
+        <div class="section-title">📋 لیست رکوردهای دوره جاری</div>
         <div class="table-wrapper">
             <table>
                 <thead>
@@ -508,13 +474,38 @@
             return [gy, gm, gd];
         }
 
+        // ================== توابع دوره ماهانه سفارشی ==================
+        function getPeriodKey(year, month, day) {
+            if (day >= 28) {
+                let nextMonth = month + 1;
+                let nextYear = year;
+                if (nextMonth > 12) {
+                    nextMonth = 1;
+                    nextYear++;
+                }
+                return `${nextYear}/${String(nextMonth).padStart(2, '0')}`;
+            } else {
+                return `${year}/${String(month).padStart(2, '0')}`;
+            }
+        }
+
+        function getTodayPeriodKey() {
+            const today = new Date();
+            const [jy, jm, jd] = gregorianToJalali(today.getFullYear(), today.getMonth() + 1, today.getDate());
+            return getPeriodKey(jy, jm, jd);
+        }
+
+        function getPeriodLabel(periodKey) {
+            const [y, m] = periodKey.split('/').map(Number);
+            return `${monthNames[m-1]} ${y}`;
+        }
+
         // ================== تقویم شمسی ==================
         const monthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
         const daySelect = document.getElementById('daySelect');
         const monthSelect = document.getElementById('monthSelect');
         const yearSelect = document.getElementById('yearSelect');
-        const filterMonth = document.getElementById('filterMonth');
-        const filterYear = document.getElementById('filterYear');
+        const periodSelect = document.getElementById('periodSelect');
 
         // سال‌های قابل انتخاب (۱۴۰۰ تا ۱۴۱۰)
         for (let y = 1400; y <= 1410; y++) {
@@ -522,10 +513,6 @@
             opt.value = y;
             opt.textContent = y;
             yearSelect.appendChild(opt);
-            let opt2 = document.createElement('option');
-            opt2.value = y;
-            opt2.textContent = y;
-            filterYear.appendChild(opt2);
         }
 
         monthNames.forEach((name, index) => {
@@ -533,10 +520,6 @@
             opt.value = index + 1;
             opt.textContent = name;
             monthSelect.appendChild(opt);
-            let opt2 = document.createElement('option');
-            opt2.value = index + 1;
-            opt2.textContent = name;
-            filterMonth.appendChild(opt2);
         });
 
         function updateDays() {
@@ -561,37 +544,64 @@
         monthSelect.addEventListener('change', updateDays);
         yearSelect.addEventListener('change', updateDays);
 
-        // مقداردهی اولیه فیلتر
-        const today = new Date();
-        const [todayJy, todayJm, todayJd] = gregorianToJalali(today.getFullYear(), today.getMonth() + 1, today.getDate());
-        filterYear.value = todayJy;
-        filterMonth.value = todayJm;
-
         // ================== منطق برنامه ==================
         let RATE = parseFloat(localStorage.getItem('overtimeRate')) || 123000;
         document.getElementById('rateInput').value = RATE;
         let records = JSON.parse(localStorage.getItem('overtimeRecords')) || [];
+        // افزودن فیلد period به رکوردهای قدیمی در صورت نیاز
+        records.forEach(rec => {
+            if (!rec.period) {
+                const [y, m, d] = rec.date.split('/').map(Number);
+                rec.period = getPeriodKey(y, m, d);
+            }
+        });
+        localStorage.setItem('overtimeRecords', JSON.stringify(records));
+
+        let currentPeriod = localStorage.getItem('currentPeriod') || getTodayPeriodKey();
         let editingIndex = -1;
 
-        function getFilteredRecords() {
-            const selectedYear = parseInt(filterYear.value);
-            const selectedMonth = parseInt(filterMonth.value);
-            return records.filter(rec => {
-                const [y, m] = rec.date.split('/').map(Number);
-                return y === selectedYear && m === selectedMonth;
+        function saveCurrentPeriod() {
+            localStorage.setItem('currentPeriod', currentPeriod);
+        }
+
+        function updatePeriodSelect() {
+            const periodsSet = new Set(records.map(rec => rec.period));
+            periodsSet.add(currentPeriod);
+            const periods = Array.from(periodsSet).sort().reverse();
+            periodSelect.innerHTML = '';
+            periods.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = getPeriodLabel(p);
+                if (p === currentPeriod) opt.selected = true;
+                periodSelect.appendChild(opt);
             });
+        }
+
+        function onPeriodChange() {
+            currentPeriod = periodSelect.value;
+            saveCurrentPeriod();
+            renderTable();
+            updateSummary();
+        }
+
+        function archiveAndStartNew() {
+            if (confirm('آیا مطمئن هستید؟ دوره جاری بایگانی شده و دوره جدید آغاز می‌شود.')) {
+                currentPeriod = getTodayPeriodKey();
+                saveCurrentPeriod();
+                updatePeriodSelect();
+                renderTable();
+                updateSummary();
+            }
         }
 
         function updateRate() {
             RATE = parseFloat(document.getElementById('rateInput').value) || 123000;
             localStorage.setItem('overtimeRate', RATE);
-
-            // به‌روزرسانی مبلغ همه رکوردها با نرخ جدید
             records.forEach(rec => {
                 rec.amount = rec.hours * RATE;
             });
             localStorage.setItem('overtimeRecords', JSON.stringify(records));
-
             updateCurrentCalc();
             renderTable();
             updateSummary();
@@ -649,8 +659,6 @@
         document.getElementById('endTime').addEventListener('input', updateCurrentCalc);
         document.getElementById('holidayHours').addEventListener('input', updateCurrentCalc);
         document.getElementById('manualHours').addEventListener('input', updateCurrentCalc);
-        filterMonth.addEventListener('change', () => { renderTable(); updateSummary(); });
-        filterYear.addEventListener('change', () => { renderTable(); updateSummary(); });
 
         function setToday() {
             const today = new Date();
@@ -712,6 +720,9 @@
                 const holidayHours = document.getElementById('holidayHours').value;
                 const manualHours = document.getElementById('manualHours').value;
 
+                const [y, m, d] = date.split('/').map(Number);
+                const period = getPeriodKey(y, m, d);
+
                 const recordData = {
                     date,
                     shift,
@@ -720,7 +731,8 @@
                     startTime,
                     endTime,
                     holidayHours,
-                    manualHours
+                    manualHours,
+                    period
                 };
 
                 if (editingIndex >= 0) {
@@ -741,6 +753,7 @@
                 });
 
                 localStorage.setItem('overtimeRecords', JSON.stringify(records));
+                updatePeriodSelect();
                 renderTable();
                 updateSummary();
                 resetForm();
@@ -752,11 +765,8 @@
         }
 
         function editRecord(index) {
-            // index is within filtered list; need to find actual index in records array
             const filtered = getFilteredRecords();
             const rec = filtered[index];
-            // find actual index by matching date, shift, hours, etc. or store actual index in data attribute
-            // Simpler: use a hidden mapping, but we can find by object reference
             const actualIndex = records.indexOf(rec);
             if (actualIndex === -1) return;
             editingIndex = actualIndex;
@@ -778,18 +788,22 @@
             if (confirm('آیا مطمئن هستید که می‌خواهید این رکورد را حذف کنید؟')) {
                 records.splice(actualIndex, 1);
                 localStorage.setItem('overtimeRecords', JSON.stringify(records));
+                updatePeriodSelect();
                 renderTable();
                 updateSummary();
                 if (editingIndex === actualIndex) resetForm();
             }
         }
 
-        // تابع محاسبه روز هفته از تاریخ شمسی
+        function getFilteredRecords() {
+            return records.filter(rec => rec.period === currentPeriod);
+        }
+
         function getWeekday(jalaliDateStr) {
             const [jy, jm, jd] = jalaliDateStr.split('/').map(Number);
             const [gy, gm, gd] = jalaliToGregorian(jy, jm, jd);
             const date = new Date(gy, gm - 1, gd);
-            const weekdayIndex = date.getDay(); // 0=Sunday, 1=Monday, ..., 6=Saturday
+            const weekdayIndex = date.getDay();
             const persianWeekdays = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'];
             return persianWeekdays[weekdayIndex];
         }
@@ -825,7 +839,7 @@
                 tbody.innerHTML += row;
             });
             document.getElementById('totalDisplay').innerHTML = 
-                `مجموع ساعات اضافه‌کار (ماه ${monthNames[parseInt(filterMonth.value)-1]} ${filterYear.value}): ${totalHours.toFixed(2)} ساعت | مجموع مبلغ: ${Math.round(totalAmount).toLocaleString('fa-IR')} تومان`;
+                `مجموع ساعات اضافه‌کار (${getPeriodLabel(currentPeriod)}): ${totalHours.toFixed(2)} ساعت | مجموع مبلغ: ${Math.round(totalAmount).toLocaleString('fa-IR')} تومان`;
         }
 
         function updateSummary() {
@@ -876,7 +890,15 @@
                     const imported = JSON.parse(e.target.result);
                     if (Array.isArray(imported)) {
                         records = imported;
+                        // اطمینان از وجود فیلد period
+                        records.forEach(rec => {
+                            if (!rec.period) {
+                                const [y, m, d] = rec.date.split('/').map(Number);
+                                rec.period = getPeriodKey(y, m, d);
+                            }
+                        });
                         localStorage.setItem('overtimeRecords', JSON.stringify(records));
+                        updatePeriodSelect();
                         renderTable();
                         updateSummary();
                         alert('اطلاعات با موفقیت بازیابی شد.');
@@ -895,6 +917,7 @@
             if (confirm('همه رکوردها پاک شوند؟ این عمل غیرقابل بازگشت است.')) {
                 records = [];
                 localStorage.removeItem('overtimeRecords');
+                updatePeriodSelect();
                 renderTable();
                 updateSummary();
                 resetForm();
@@ -902,6 +925,7 @@
         }
 
         // مقداردهی اولیه
+        updatePeriodSelect();
         renderTable();
         updateSummary();
     </script>
