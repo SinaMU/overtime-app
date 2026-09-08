@@ -11,6 +11,7 @@
             --secondary: #6c757d;
             --danger: #dc3545;
             --warning: #ffc107;
+            --success: #28a745;
             --bg: #f0f2f5;
             --card: #ffffff;
             --text: #333;
@@ -141,6 +142,12 @@
         }
         .btn-danger:hover {
             background: #c82333;
+        }
+        .btn-success {
+            background: var(--success);
+        }
+        .btn-success:hover {
+            background: #218838;
         }
         .result {
             margin-top: 20px;
@@ -290,6 +297,21 @@
         .archive-btn:hover {
             background: #218838;
         }
+        .archive-table {
+            margin-top: 15px;
+        }
+        .view-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .view-btn:hover {
+            background: #3a7bd5;
+        }
         @media (max-width: 600px) {
             body { padding: 10px; }
             .container { padding: 15px; }
@@ -406,6 +428,22 @@
 
         <!-- مجموع کل -->
         <div class="total" id="totalDisplay">مجموع: ۰ تومان</div>
+
+        <!-- بایگانی دوره‌ها -->
+        <div class="section-title">🗄 بایگانی دوره‌ها</div>
+        <div class="table-wrapper archive-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>دوره</th>
+                        <th>مجموع ساعت</th>
+                        <th>مجموع مبلغ (تومان)</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="archiveBody"></tbody>
+            </table>
+        </div>
 
         <!-- تنظیمات و ابزارها -->
         <div class="settings-section">
@@ -548,7 +586,6 @@
         let RATE = parseFloat(localStorage.getItem('overtimeRate')) || 123000;
         document.getElementById('rateInput').value = RATE;
         let records = JSON.parse(localStorage.getItem('overtimeRecords')) || [];
-        // افزودن فیلد period به رکوردهای قدیمی در صورت نیاز
         records.forEach(rec => {
             if (!rec.period) {
                 const [y, m, d] = rec.date.split('/').map(Number);
@@ -583,6 +620,7 @@
             saveCurrentPeriod();
             renderTable();
             updateSummary();
+            renderArchive();
         }
 
         function archiveAndStartNew() {
@@ -592,6 +630,7 @@
                 updatePeriodSelect();
                 renderTable();
                 updateSummary();
+                renderArchive();
             }
         }
 
@@ -605,6 +644,7 @@
             updateCurrentCalc();
             renderTable();
             updateSummary();
+            renderArchive();
         }
 
         function onShiftChange() {
@@ -756,6 +796,7 @@
                 updatePeriodSelect();
                 renderTable();
                 updateSummary();
+                renderArchive();
                 resetForm();
                 document.querySelector('table').scrollIntoView({ behavior: 'smooth' });
             } catch (error) {
@@ -791,6 +832,7 @@
                 updatePeriodSelect();
                 renderTable();
                 updateSummary();
+                renderArchive();
                 if (editingIndex === actualIndex) resetForm();
             }
         }
@@ -870,6 +912,48 @@
             }
         }
 
+        function renderArchive() {
+            const tbody = document.getElementById('archiveBody');
+            tbody.innerHTML = '';
+            // گروه‌بندی رکوردها بر اساس دوره، بدون دوره جاری
+            const periods = {};
+            records.forEach(rec => {
+                if (rec.period !== currentPeriod) {
+                    if (!periods[rec.period]) {
+                        periods[rec.period] = { hours: 0, amount: 0 };
+                    }
+                    periods[rec.period].hours += rec.hours;
+                    periods[rec.period].amount += rec.amount;
+                }
+            });
+            const sortedPeriods = Object.keys(periods).sort().reverse();
+            if (sortedPeriods.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">هنوز دوره‌ای بایگانی نشده است.</td></tr>';
+                return;
+            }
+            sortedPeriods.forEach(period => {
+                const data = periods[period];
+                const row = `<tr>
+                    <td>${getPeriodLabel(period)}</td>
+                    <td>${data.hours.toFixed(2)}</td>
+                    <td>${Math.round(data.amount).toLocaleString('fa-IR')}</td>
+                    <td><button class="view-btn" onclick="loadPeriod('${period}')">مشاهده</button></td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function loadPeriod(period) {
+            currentPeriod = period;
+            saveCurrentPeriod();
+            // به‌روزرسانی انتخاب در dropdown
+            periodSelect.value = period;
+            renderTable();
+            updateSummary();
+            renderArchive();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function exportJSON() {
             const dataStr = JSON.stringify(records, null, 2);
             const blob = new Blob([dataStr], { type: 'application/json' });
@@ -890,7 +974,6 @@
                     const imported = JSON.parse(e.target.result);
                     if (Array.isArray(imported)) {
                         records = imported;
-                        // اطمینان از وجود فیلد period
                         records.forEach(rec => {
                             if (!rec.period) {
                                 const [y, m, d] = rec.date.split('/').map(Number);
@@ -901,6 +984,7 @@
                         updatePeriodSelect();
                         renderTable();
                         updateSummary();
+                        renderArchive();
                         alert('اطلاعات با موفقیت بازیابی شد.');
                     } else {
                         alert('فرمت فایل نادرست است.');
@@ -920,6 +1004,7 @@
                 updatePeriodSelect();
                 renderTable();
                 updateSummary();
+                renderArchive();
                 resetForm();
             }
         }
@@ -928,6 +1013,7 @@
         updatePeriodSelect();
         renderTable();
         updateSummary();
+        renderArchive();
     </script>
 </body>
 </html>
