@@ -26,177 +26,252 @@
         body {
             background: var(--bg);
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             direction: rtl;
             color: var(--text);
+            font-size: 14px;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: var(--card);
-            border-radius: 15px;
+            border-radius: 12px;
             box-shadow: var(--shadow);
-            padding: 25px;
+            padding: 15px;
         }
         h2 {
             text-align: center;
-            color: var(--primary);
-            margin-bottom: 20px;
+            margin: 0 0 12px 0;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 28px;
+            font-size: 22px;
         }
         .section-title {
             font-weight: bold;
-            margin-top: 20px;
-            margin-bottom: 10px;
+            margin: 12px 0 6px 0;
             color: #555;
             border-bottom: 2px solid var(--primary);
-            padding-bottom: 5px;
+            padding-bottom: 3px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         label {
             display: block;
-            margin-top: 10px;
+            margin-top: 6px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
         }
         select, input[type="number"], input[type="time"], input[type="file"] {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
+            padding: 7px 8px;
+            margin-top: 3px;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 6px;
+            font-size: 14px;
             background: white;
-            transition: border 0.3s;
             box-sizing: border-box;
         }
         select:focus, input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 5px rgba(74,144,226,0.3);
+            box-shadow: 0 0 4px rgba(74,144,226,0.3);
         }
-        .date-row {
-            display: flex;
-            gap: 5px;
-            align-items: center;
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
         }
-        .date-row select {
-            flex: 1;
+        .form-grid .full { grid-column: 1 / -1; }
+        .date-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 6px;
+            align-items: end;
         }
         .btn-today {
             background: var(--secondary);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 7px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             white-space: nowrap;
+            height: 34px;
         }
-        .btn-today:hover {
-            background: #5a6268;
-        }
-        .holiday-hours, .time-fields, .manual-hours {
-            margin-top: 10px;
-            padding: 15px;
-            background: var(--light-bg);
-            border-radius: 8px;
-        }
-        .holiday-hours {
-            display: none;
-        }
-        .time-fields {
-            display: block;
-        }
-        .main-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .main-actions button {
-            flex: 1;
-        }
+        .btn-today:hover { background: #5a6268; }
+
         button {
-            padding: 12px;
+            padding: 9px;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 6px;
+            font-size: 14px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.2s;
         }
-        button:hover {
-            background: #3a7bd5;
+        button:hover { background: #3a7bd5; }
+        .btn-secondary { background: var(--secondary); }
+        .btn-secondary:hover { background: #5a6268; }
+        .btn-danger { background: var(--danger); }
+        .btn-danger:hover { background: #c82333; }
+        .btn-success { background: var(--success); }
+        .btn-success:hover { background: #218838; }
+
+        .main-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
         }
-        .btn-secondary {
-            background: var(--secondary);
-        }
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-        .btn-danger {
-            background: var(--danger);
-        }
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        .btn-success {
-            background: var(--success);
-        }
-        .btn-success:hover {
-            background: #218838;
-        }
-        .result {
-            margin-top: 20px;
+        .main-actions button { flex: 1; }
+
+        .result-bar {
+            margin-top: 8px;
             background: #e9ecef;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-around;
+            font-size: 13px;
         }
-        .result span {
-            font-weight: bold;
-            color: var(--primary);
+        .result-bar span { font-weight: bold; color: var(--primary); }
+
+        .summary-chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 6px 0;
         }
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin: 20px 0;
-        }
-        .summary-card {
+        .summary-chip {
             background: var(--light-bg);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .summary-chip .name { font-weight: bold; color: var(--primary); }
+        .summary-chip .val { color: #555; }
+
+        /* ================== نمودار ================== */
+        .chart-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
             padding: 10px;
+            background: var(--light-bg);
             border-radius: 8px;
-            text-align: center;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .donut-wrapper {
+            flex: 0 0 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .donut {
+            width: 100%;
+            max-width: 160px;
+            height: auto;
+        }
+        .donut-ring {
+            stroke: #e9ecef;
+        }
+        .donut-segment {
+            transition: stroke-dasharray 0.5s ease;
+        }
+        .donut-text {
+            font-family: 'Vazir', Tahoma, sans-serif;
+        }
+        .donut-total {
+            font-size: 6px;
+            font-weight: bold;
+            fill: var(--primary);
+        }
+        .donut-label {
+            font-size: 3px;
+            fill: #888;
+        }
+        .chart-legend {
+            flex: 1;
+            min-width: 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 8px;
+            background: white;
+            border-radius: 6px;
+            font-size: 12px;
             border: 1px solid var(--border);
         }
-        .summary-card h4 {
-            margin: 0 0 5px 0;
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .legend-info {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .legend-name {
+            font-weight: bold;
+            color: #333;
+        }
+        .legend-details {
+            display: flex;
+            gap: 8px;
+            font-size: 11px;
+            color: #666;
+        }
+        .legend-hours {
             color: var(--primary);
+            font-weight: bold;
         }
-        .summary-card p {
-            margin: 0;
-            font-size: 14px;
+        .legend-amount {
+            color: var(--success);
+            font-weight: bold;
         }
+        .chart-empty {
+            color: #888;
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            width: 100%;
+        }
+
         .table-wrapper {
             overflow-x: auto;
-            margin-top: 20px;
+            margin-top: 8px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            font-size: 16px;
+            font-size: 13px;
         }
         th, td {
             border: 1px solid var(--border);
-            padding: 10px;
+            padding: 6px;
             text-align: center;
         }
         th {
@@ -204,131 +279,126 @@
             color: white;
             font-weight: normal;
         }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        .holiday-row {
-            background-color: #ffe6e6 !important;
-        }
-        .total {
-            margin-top: 20px;
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .holiday-row { background-color: #ffe6e6 !important; }
+
+        .total-bar {
+            margin-top: 10px;
             font-weight: bold;
             text-align: center;
-            font-size: 18px;
+            font-size: 14px;
             background: #e9ecef;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            position: sticky;
+            bottom: 5px;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
         }
-        .action-btns {
+
+        .action-btns { display: flex; gap: 3px; justify-content: center; }
+        .edit-btn, .delete-btn, .view-btn {
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .edit-btn { background: var(--warning); color: #000; }
+        .edit-btn:hover { background: #e0a800; }
+        .delete-btn { background: var(--danger); color: white; }
+        .delete-btn:hover { background: #c82333; }
+        .view-btn { background: var(--primary); color: white; }
+        .view-btn:hover { background: #3a7bd5; }
+
+        details {
+            margin-top: 8px;
+            background: var(--light-bg);
+            border-radius: 6px;
+            padding: 0;
+            border: 1px solid var(--border);
+        }
+        details[open] { padding-bottom: 10px; }
+        details summary {
+            cursor: pointer;
+            padding: 8px 12px;
+            font-weight: bold;
+            font-size: 13px;
+            color: #555;
+            user-select: none;
             display: flex;
-            gap: 5px;
-            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            border-radius: 6px;
         }
-        .edit-btn {
-            background: var(--warning);
-            color: #000;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
+        details summary:hover { background: #e9ecef; }
+        details summary::-webkit-details-marker { color: var(--primary); }
+        details > *:not(summary) { padding: 0 12px; }
+
+        .inline-fields {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
         }
-        .edit-btn:hover {
-            background: #e0a800;
+        .inline-fields > div {
+            flex: 1;
+            min-width: 120px;
         }
-        .delete-btn {
-            background: var(--danger);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
+
+        .period-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
         }
-        .delete-btn:hover {
-            background: #c82333;
+        .period-row label {
+            margin: 0;
+            white-space: nowrap;
         }
-        .settings-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px dashed #ccc;
+        .period-row select { margin: 0; }
+        .period-row button {
+            white-space: nowrap;
+            padding: 7px 12px;
+            font-size: 13px;
         }
+
         .file-actions {
             display: flex;
-            gap: 10px;
+            gap: 6px;
             flex-wrap: wrap;
         }
         .file-actions button, .file-actions label {
             flex: 1;
-            min-width: 100px;
+            min-width: 90px;
             text-align: center;
         }
-        .file-actions input[type="file"] {
-            display: none;
-        }
+        .file-actions input[type="file"] { display: none; }
         .file-label {
             background: var(--secondary);
             color: white;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 9px;
+            border-radius: 6px;
             cursor: pointer;
             text-align: center;
-            font-size: 16px;
+            font-size: 13px;
         }
-        .file-label:hover {
-            background: #5a6268;
-        }
-        .period-filter {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        .period-filter select {
-            flex: 1;
-            min-width: 150px;
-        }
-        .period-filter button {
-            width: auto;
-            padding: 10px 20px;
-        }
-        .archive-btn {
-            background: var(--success, #28a745);
-        }
-        .archive-btn:hover {
-            background: #218838;
-        }
-        .archive-table {
-            margin-top: 15px;
-        }
-        .view-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .view-btn:hover {
-            background: #3a7bd5;
-        }
+        .file-label:hover { background: #5a6268; }
+
         @media (max-width: 600px) {
-            body { padding: 10px; }
-            .container { padding: 15px; }
-            h2 { font-size: 24px; }
-            .date-row { flex-wrap: wrap; }
-            .date-row select { flex: 1 1 30%; min-width: 0; }
-            .btn-today { flex: 1 1 100%; margin-top: 5px; }
-            .main-actions { flex-direction: column; }
-            .main-actions button { width: 100%; }
-            .summary-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
-            table { font-size: 14px; }
-            th, td { padding: 6px; }
-            .file-actions { flex-direction: column; }
-            .file-actions button, .file-actions label { width: 100%; }
-            .period-filter { flex-direction: column; }
-            .period-filter select { width: 100%; }
-            .period-filter button { width: 100%; }
+            body { padding: 5px; }
+            .container { padding: 10px; border-radius: 8px; }
+            h2 { font-size: 18px; margin-bottom: 8px; }
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .date-grid { grid-template-columns: 1fr 1fr 1fr; }
+            .date-grid .btn-today { grid-column: 1 / -1; }
+            table { font-size: 12px; }
+            th, td { padding: 4px; }
+            .result-bar { flex-direction: column; gap: 4px; text-align: center; }
+            .period-row { grid-template-columns: 1fr; }
+            .period-row button { width: 100%; }
+            .chart-container { flex-direction: column; }
+            .donut-wrapper { flex: none; }
         }
     </style>
 </head>
@@ -337,87 +407,96 @@
         <h2>🧮 محاسبه اضافه کار</h2>
 
         <!-- انتخاب دوره ماهانه -->
-        <div class="section-title">📅 دوره ماهانه (۲۸ام تا ۲۷ام)</div>
-        <div class="period-filter">
-            <label for="periodSelect">دوره جاری:</label>
+        <div class="period-row">
+            <label>📅 دوره:</label>
             <select id="periodSelect" onchange="onPeriodChange()"></select>
-            <button class="archive-btn" onclick="archiveAndStartNew()">📦 بایگانی و شروع دوره جدید</button>
+            <button class="btn-success" onclick="archiveAndStartNew()">📦 بایگانی و دوره جدید</button>
         </div>
 
-        <!-- انتخاب تاریخ شمسی -->
-        <label>📅 تاریخ:</label>
-        <div class="date-row">
+        <!-- فرم ثبت -->
+        <div class="section-title">📝 ثبت رکورد جدید</div>
+
+        <div class="date-grid">
             <select id="daySelect"></select>
             <select id="monthSelect"></select>
             <select id="yearSelect"></select>
             <button class="btn-today" onclick="setToday()">امروز</button>
         </div>
 
-        <!-- نوع شیفت -->
-        <label>🔄 نوع شیفت:</label>
-        <select id="shiftType" onchange="onShiftChange()">
-            <option value="day">روز (۲ ساعت اضافه‌کار ثابت)</option>
-            <option value="night">شب (۲ ساعت اضافه‌کار ثابت)</option>
-            <option value="holiday">تعطیل (کل ساعات کار اضافه‌کار)</option>
-            <option value="thursday">پنجشنبه (کل ساعات کار اضافه‌کار)</option>
-        </select>
+        <div class="form-grid" style="margin-top: 6px;">
+            <div class="full">
+                <label>نوع شیفت:</label>
+                <select id="shiftType" onchange="onShiftChange()">
+                    <option value="day">روز (۲ ساعت اضافه‌کار)</option>
+                    <option value="evening">عصر ۲ (۲ ساعت اضافه‌کار)</option>
+                    <option value="night3">شب ۳ (۳ ساعت اضافه‌کار)</option>
+                    <option value="holiday">تعطیل (کل ساعات کار)</option>
+                    <option value="thursday">پنجشنبه (کل ساعات کار)</option>
+                </select>
+            </div>
+        </div>
 
-        <!-- ورود دستی ساعت ورود و خروج -->
-        <div class="time-fields" id="timeFields">
-            <label>⏰ ساعت ورود و خروج (اختیاری):</label>
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <div style="flex:1;">
-                    <label>ورود</label>
+        <!-- گزینه‌های پیشرفته (شامل نرخ اضافه‌کار) -->
+        <details>
+            <summary>⚙️ گزینه‌های پیشرفته (اختیاری)</summary>
+
+            <label>💰 نرخ هر ساعت اضافه‌کار (تومان):</label>
+            <input type="number" id="rateInput" value="123000" step="1000" min="0" onchange="updateRate()">
+
+            <label style="margin-top:8px;">⏰ ساعت ورود و خروج:</label>
+            <div class="inline-fields">
+                <div>
+                    <label style="margin:0;font-size:11px;">ورود</label>
                     <input type="time" id="startTime">
                 </div>
-                <div style="flex:1;">
-                    <label>خروج</label>
+                <div>
+                    <label style="margin:0;font-size:11px;">خروج</label>
                     <input type="time" id="endTime">
                 </div>
             </div>
-            <small style="color:#666;">اگر وارد شود، اضافه‌کار بر اساس این ساعت‌ها محاسبه می‌شود.</small>
-        </div>
 
-        <!-- ساعت کار در تعطیل / پنجشنبه -->
-        <div id="holidayHoursDiv" class="holiday-hours">
-            <label>⏱ ساعت کار در این روز:</label>
-            <input type="number" id="holidayHours" value="8.5" step="0.5" min="0">
-            <small style="color:#666;">در صورت وارد نکردن ساعت ورود/خروج و ساعت دستی، از این مقدار استفاده می‌شود.</small>
-        </div>
+            <div id="holidayHoursDiv" style="display:none;margin-top:6px;">
+                <label>⏱ ساعت کار در این روز:</label>
+                <input type="number" id="holidayHours" value="8.5" step="0.5" min="0">
+            </div>
 
-        <!-- ورود دستی ساعت اضافه‌کار -->
-        <div class="manual-hours">
-            <label>✍️ ساعت اضافه‌کار دستی (اختیاری):</label>
-            <input type="number" id="manualHours" value="" placeholder="مثلاً 3.5" step="0.5" min="0">
-            <small style="color:#666;">اگر عددی وارد کنید، محاسبه‌ی خودکار نادیده گرفته می‌شود.</small>
-        </div>
+            <div style="margin-top:6px;">
+                <label>✍️ ساعت اضافه‌کار دستی:</label>
+                <input type="number" id="manualHours" value="" placeholder="مثلاً 3.5" step="0.5" min="0">
+            </div>
+        </details>
 
-        <!-- دکمه‌های عملیات -->
         <div class="main-actions">
             <button id="addBtn" onclick="addOrUpdateRecord()">➕ افزودن به لیست</button>
             <button id="cancelEditBtn" onclick="cancelEdit()" class="btn-secondary" style="display:none;">لغو ویرایش</button>
         </div>
 
-        <!-- نمایش محاسبه فعلی -->
-        <div class="result" id="currentCalc">
-            ساعت اضافه‌کار: <span id="hoursDisplay">2</span> ساعت<br>
-            مبلغ: <span id="amountDisplay">246,000</span> تومان
+        <!-- نوار نتیجه کوچک -->
+        <div class="result-bar">
+            <div>ساعت اضافه‌کار: <span id="hoursDisplay">2</span></div>
+            <div>مبلغ: <span id="amountDisplay">246,000</span> تومان</div>
         </div>
 
-        <!-- خلاصه آماری -->
-        <div class="section-title">📊 خلاصه دوره جاری</div>
-        <div class="summary-grid" id="summaryGrid"></div>
+        <!-- نمودار گزارش -->
+        <div class="section-title">📈 نمودار گزارش دوره</div>
+        <div class="chart-container" id="chartContainer">
+            <div class="chart-empty">هنوز رکوردی ثبت نشده است.</div>
+        </div>
+
+        <!-- خلاصه آماری فشرده -->
+        <div class="section-title">📊 خلاصه دوره</div>
+        <div class="summary-chips" id="summaryGrid"></div>
 
         <!-- جدول رکوردها -->
-        <div class="section-title">📋 لیست رکوردهای دوره جاری</div>
+        <div class="section-title">📋 رکوردهای دوره</div>
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
                         <th>تاریخ</th>
-                        <th>روز هفته</th>
+                        <th>روز</th>
                         <th>شیفت</th>
-                        <th>ساعت اضافه‌کار</th>
+                        <th>ساعت</th>
                         <th>مبلغ (تومان)</th>
                         <th>عملیات</th>
                     </tr>
@@ -426,42 +505,37 @@
             </table>
         </div>
 
-        <!-- مجموع کل -->
-        <div class="total" id="totalDisplay">مجموع: ۰ تومان</div>
+        <!-- مجموع کل چسبیده به پایین -->
+        <div class="total-bar" id="totalDisplay">مجموع: ۰</div>
 
-        <!-- بایگانی دوره‌ها -->
-        <div class="section-title">🗄 بایگانی دوره‌ها</div>
-        <div class="table-wrapper archive-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>دوره</th>
-                        <th>مجموع ساعت</th>
-                        <th>مجموع مبلغ (تومان)</th>
-                        <th>عملیات</th>
-                    </tr>
-                </thead>
-                <tbody id="archiveBody"></tbody>
-            </table>
-        </div>
+        <!-- بایگانی (جمع‌شونده) -->
+        <details>
+            <summary>🗄 بایگانی دوره‌ها</summary>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>دوره</th>
+                            <th>مجموع ساعت</th>
+                            <th>مجموع مبلغ (تومان)</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archiveBody"></tbody>
+                </table>
+            </div>
+        </details>
 
-        <!-- تنظیمات و ابزارها -->
-        <div class="settings-section">
-            <div class="section-title">⚙️ تنظیمات و ابزارها</div>
-
-            <!-- نرخ اضافه‌کار -->
-            <label>💰 نرخ هر ساعت اضافه‌کار (تومان):</label>
-            <input type="number" id="rateInput" value="123000" step="1000" min="0" onchange="updateRate()">
-
-            <!-- پشتیبان‌گیری -->
-            <label>💾 پشتیبان‌گیری و بازیابی:</label>
-            <div class="file-actions">
+        <!-- تنظیمات (جمع‌شونده، بدون نرخ) -->
+        <details>
+            <summary>💾 پشتیبان‌گیری و بازیابی</summary>
+            <div class="file-actions" style="margin-top:8px;">
                 <button onclick="exportJSON()">خروجی JSON</button>
                 <label class="file-label" for="importFile">ورودی JSON</label>
                 <input type="file" id="importFile" accept=".json" onchange="importJSON(event)">
                 <button class="btn-danger" onclick="clearAll()">پاک کردن همه</button>
             </div>
-        </div>
+        </details>
     </div>
 
     <script>
@@ -503,28 +577,21 @@
             var gm = 0;
             for (var i = 0; i < 13; i++) {
                 var v = sal_a[i];
-                if (gd <= v) {
-                    gm = i;
-                    break;
-                }
+                if (gd <= v) { gm = i; break; }
                 gd -= v;
             }
             return [gy, gm, gd];
         }
 
-        // ================== توابع دوره ماهانه سفارشی ==================
+        // ================== دوره ماهانه (۲۹ام تا ۲۸ام) ==================
         function getPeriodKey(year, month, day) {
-            if (day >= 28) {
+            if (day >= 29) {
                 let nextMonth = month + 1;
                 let nextYear = year;
-                if (nextMonth > 12) {
-                    nextMonth = 1;
-                    nextYear++;
-                }
+                if (nextMonth > 12) { nextMonth = 1; nextYear++; }
                 return `${nextYear}/${String(nextMonth).padStart(2, '0')}`;
-            } else {
-                return `${year}/${String(month).padStart(2, '0')}`;
             }
+            return `${year}/${String(month).padStart(2, '0')}`;
         }
 
         function getTodayPeriodKey() {
@@ -545,18 +612,15 @@
         const yearSelect = document.getElementById('yearSelect');
         const periodSelect = document.getElementById('periodSelect');
 
-        // سال‌های قابل انتخاب (۱۴۰۰ تا ۱۴۱۰)
         for (let y = 1400; y <= 1410; y++) {
             let opt = document.createElement('option');
-            opt.value = y;
-            opt.textContent = y;
+            opt.value = y; opt.textContent = y;
             yearSelect.appendChild(opt);
         }
 
         monthNames.forEach((name, index) => {
             let opt = document.createElement('option');
-            opt.value = index + 1;
-            opt.textContent = name;
+            opt.value = index + 1; opt.textContent = name;
             monthSelect.appendChild(opt);
         });
 
@@ -567,8 +631,7 @@
             daySelect.innerHTML = '';
             for (let d = 1; d <= daysInMonth; d++) {
                 let opt = document.createElement('option');
-                opt.value = d;
-                opt.textContent = d;
+                opt.value = d; opt.textContent = d;
                 daySelect.appendChild(opt);
             }
         }
@@ -586,8 +649,10 @@
         let RATE = parseFloat(localStorage.getItem('overtimeRate')) || 123000;
         document.getElementById('rateInput').value = RATE;
         let records = JSON.parse(localStorage.getItem('overtimeRecords')) || [];
+
         records.forEach(rec => {
-            if (!rec.period) {
+            if (rec.shift === 'night') rec.shift = 'evening';
+            if (rec.date) {
                 const [y, m, d] = rec.date.split('/').map(Number);
                 rec.period = getPeriodKey(y, m, d);
             }
@@ -597,9 +662,7 @@
         let currentPeriod = localStorage.getItem('currentPeriod') || getTodayPeriodKey();
         let editingIndex = -1;
 
-        function saveCurrentPeriod() {
-            localStorage.setItem('currentPeriod', currentPeriod);
-        }
+        function saveCurrentPeriod() { localStorage.setItem('currentPeriod', currentPeriod); }
 
         function updatePeriodSelect() {
             const periodsSet = new Set(records.map(rec => rec.period));
@@ -608,8 +671,7 @@
             periodSelect.innerHTML = '';
             periods.forEach(p => {
                 const opt = document.createElement('option');
-                opt.value = p;
-                opt.textContent = getPeriodLabel(p);
+                opt.value = p; opt.textContent = getPeriodLabel(p);
                 if (p === currentPeriod) opt.selected = true;
                 periodSelect.appendChild(opt);
             });
@@ -618,9 +680,7 @@
         function onPeriodChange() {
             currentPeriod = periodSelect.value;
             saveCurrentPeriod();
-            renderTable();
-            updateSummary();
-            renderArchive();
+            renderTable(); updateSummary(); renderChart(); renderArchive();
         }
 
         function archiveAndStartNew() {
@@ -628,23 +688,17 @@
                 currentPeriod = getTodayPeriodKey();
                 saveCurrentPeriod();
                 updatePeriodSelect();
-                renderTable();
-                updateSummary();
-                renderArchive();
+                renderTable(); updateSummary(); renderChart(); renderArchive();
             }
         }
 
         function updateRate() {
             RATE = parseFloat(document.getElementById('rateInput').value) || 123000;
             localStorage.setItem('overtimeRate', RATE);
-            records.forEach(rec => {
-                rec.amount = rec.hours * RATE;
-            });
+            records.forEach(rec => { rec.amount = rec.hours * RATE; });
             localStorage.setItem('overtimeRecords', JSON.stringify(records));
             updateCurrentCalc();
-            renderTable();
-            updateSummary();
-            renderArchive();
+            renderTable(); updateSummary(); renderChart(); renderArchive();
         }
 
         function onShiftChange() {
@@ -652,6 +706,7 @@
             const holidayDiv = document.getElementById('holidayHoursDiv');
             if (shift === 'holiday' || shift === 'thursday') {
                 holidayDiv.style.display = 'block';
+                holidayDiv.parentElement.open = true;
             } else {
                 holidayDiv.style.display = 'none';
             }
@@ -675,12 +730,13 @@
                 let diff = (end - start) / (1000 * 60 * 60);
                 if (diff < 0) diff += 24;
                 let regularHours = 8.5;
-                if (shift === 'night') regularHours = 6.5;
+                if (shift === 'evening') regularHours = 6.5;
+                if (shift === 'night3') regularHours = 5.5;
                 hours = Math.max(0, diff - regularHours);
             } else {
-                if (shift === 'day' || shift === 'night') {
-                    hours = 2;
-                } else if (shift === 'holiday' || shift === 'thursday') {
+                if (shift === 'day' || shift === 'evening') hours = 2;
+                else if (shift === 'night3') hours = 3;
+                else if (shift === 'holiday' || shift === 'thursday') {
                     hours = parseFloat(document.getElementById('holidayHours').value) || 0;
                 }
             }
@@ -763,17 +819,7 @@
                 const [y, m, d] = date.split('/').map(Number);
                 const period = getPeriodKey(y, m, d);
 
-                const recordData = {
-                    date,
-                    shift,
-                    hours,
-                    amount,
-                    startTime,
-                    endTime,
-                    holidayHours,
-                    manualHours,
-                    period
-                };
+                const recordData = { date, shift, hours, amount, startTime, endTime, holidayHours, manualHours, period };
 
                 if (editingIndex >= 0) {
                     records[editingIndex] = recordData;
@@ -787,18 +833,13 @@
                 records.sort((a, b) => {
                     const aParts = a.date.split('/').map(Number);
                     const bParts = b.date.split('/').map(Number);
-                    const aNum = aParts[0] * 10000 + aParts[1] * 100 + aParts[2];
-                    const bNum = bParts[0] * 10000 + bParts[1] * 100 + bParts[2];
-                    return aNum - bNum;
+                    return (aParts[0] * 10000 + aParts[1] * 100 + aParts[2]) - (bParts[0] * 10000 + bParts[1] * 100 + bParts[2]);
                 });
 
                 localStorage.setItem('overtimeRecords', JSON.stringify(records));
                 updatePeriodSelect();
-                renderTable();
-                updateSummary();
-                renderArchive();
+                renderTable(); updateSummary(); renderChart(); renderArchive();
                 resetForm();
-                document.querySelector('table').scrollIntoView({ behavior: 'smooth' });
             } catch (error) {
                 alert('خطا در افزودن رکورد: ' + error.message);
                 console.error(error);
@@ -817,22 +858,18 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function cancelEdit() {
-            resetForm();
-        }
+        function cancelEdit() { resetForm(); }
 
         function deleteRecord(index) {
             const filtered = getFilteredRecords();
             const rec = filtered[index];
             const actualIndex = records.indexOf(rec);
             if (actualIndex === -1) return;
-            if (confirm('آیا مطمئن هستید که می‌خواهید این رکورد را حذف کنید؟')) {
+            if (confirm('آیا مطمئن هستید؟')) {
                 records.splice(actualIndex, 1);
                 localStorage.setItem('overtimeRecords', JSON.stringify(records));
                 updatePeriodSelect();
-                renderTable();
-                updateSummary();
-                renderArchive();
+                renderTable(); updateSummary(); renderChart(); renderArchive();
                 if (editingIndex === actualIndex) resetForm();
             }
         }
@@ -850,16 +887,18 @@
             return persianWeekdays[weekdayIndex];
         }
 
+        function getShiftLabel(shift) {
+            const map = { day: 'روز', evening: 'عصر ۲', night3: 'شب ۳', holiday: 'تعطیل', thursday: 'پنجشنبه' };
+            return map[shift] || shift;
+        }
+
         function renderTable() {
             const tbody = document.getElementById('recordsBody');
             tbody.innerHTML = '';
             const filteredRecords = getFilteredRecords();
-            let totalHours = 0;
-            let totalAmount = 0;
+            let totalHours = 0, totalAmount = 0;
             filteredRecords.forEach((rec, index) => {
-                const shiftLabel = rec.shift === 'day' ? 'روز' :
-                                  rec.shift === 'night' ? 'شب' :
-                                  rec.shift === 'holiday' ? 'تعطیل' : 'پنجشنبه';
+                const shiftLabel = getShiftLabel(rec.shift);
                 totalHours += rec.hours;
                 totalAmount += rec.amount;
                 const isHolidayOrThursday = (rec.shift === 'holiday' || rec.shift === 'thursday');
@@ -873,22 +912,26 @@
                     <td>${Math.round(rec.amount).toLocaleString('fa-IR')}</td>
                     <td>
                         <div class="action-btns">
-                            <button class="edit-btn" onclick="editRecord(${index})">ویرایش</button>
-                            <button class="delete-btn" onclick="deleteRecord(${index})">حذف</button>
+                            <button class="edit-btn" onclick="editRecord(${index})">✏️</button>
+                            <button class="delete-btn" onclick="deleteRecord(${index})">🗑</button>
                         </div>
                     </td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
+            if (filteredRecords.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="color:#888;">رکوردی ثبت نشده است.</td></tr>';
+            }
             document.getElementById('totalDisplay').innerHTML = 
-                `مجموع ساعات اضافه‌کار (${getPeriodLabel(currentPeriod)}): ${totalHours.toFixed(2)} ساعت | مجموع مبلغ: ${Math.round(totalAmount).toLocaleString('fa-IR')} تومان`;
+                `مجموع (${getPeriodLabel(currentPeriod)}): ${totalHours.toFixed(2)} ساعت | ${Math.round(totalAmount).toLocaleString('fa-IR')} تومان`;
         }
 
         function updateSummary() {
             const filteredRecords = getFilteredRecords();
             const summary = {
                 day: { hours: 0, amount: 0 },
-                night: { hours: 0, amount: 0 },
+                evening: { hours: 0, amount: 0 },
+                night3: { hours: 0, amount: 0 },
                 holiday: { hours: 0, amount: 0 },
                 thursday: { hours: 0, amount: 0 }
             };
@@ -900,35 +943,136 @@
             });
             const grid = document.getElementById('summaryGrid');
             grid.innerHTML = '';
-            const labels = { day: 'روز', night: 'شب', holiday: 'تعطیل', thursday: 'پنجشنبه' };
+            const labels = { day: 'روز', evening: 'عصر ۲', night3: 'شب ۳', holiday: 'تعطیل', thursday: 'پنجشنبه' };
             for (const key in summary) {
                 const s = summary[key];
-                const card = document.createElement('div');
-                card.className = 'summary-card';
-                card.innerHTML = `<h4>${labels[key]}</h4>
-                                  <p>ساعت: ${s.hours.toFixed(2)}</p>
-                                  <p>مبلغ: ${Math.round(s.amount).toLocaleString('fa-IR')} تومان</p>`;
-                grid.appendChild(card);
+                if (s.hours === 0 && s.amount === 0) continue;
+                const chip = document.createElement('div');
+                chip.className = 'summary-chip';
+                chip.innerHTML = `<span class="name">${labels[key]}:</span>
+                                  <span class="val">${s.hours.toFixed(1)}ساعت</span>
+                                  <span class="val">${Math.round(s.amount/1000)}هزار</span>`;
+                grid.appendChild(chip);
             }
+            if (grid.children.length === 0) {
+                grid.innerHTML = '<div style="color:#888;font-size:12px;">داده‌ای برای نمایش نیست.</div>';
+            }
+        }
+
+        // ================== نمودار گزارش ==================
+        const chartColors = {
+            day: '#4a90e2',
+            evening: '#28a745',
+            night3: '#6f42c1',
+            holiday: '#dc3545',
+            thursday: '#fd7e14'
+        };
+        const chartLabels = {
+            day: 'روز',
+            evening: 'عصر ۲',
+            night3: 'شب ۳',
+            holiday: 'تعطیل',
+            thursday: 'پنجشنبه'
+        };
+
+        function renderChart() {
+            const container = document.getElementById('chartContainer');
+            const filteredRecords = getFilteredRecords();
+
+            if (filteredRecords.length === 0) {
+                container.innerHTML = '<div class="chart-empty">هنوز رکوردی ثبت نشده است.</div>';
+                return;
+            }
+
+            const summary = {
+                day: { hours: 0, amount: 0 },
+                evening: { hours: 0, amount: 0 },
+                night3: { hours: 0, amount: 0 },
+                holiday: { hours: 0, amount: 0 },
+                thursday: { hours: 0, amount: 0 }
+            };
+            filteredRecords.forEach(rec => {
+                if (summary[rec.shift]) {
+                    summary[rec.shift].hours += rec.hours;
+                    summary[rec.shift].amount += rec.amount;
+                }
+            });
+
+            const totalHours = Object.values(summary).reduce((a, b) => a + b.hours, 0);
+            if (totalHours === 0) {
+                container.innerHTML = '<div class="chart-empty">مجموع ساعات صفر است.</div>';
+                return;
+            }
+
+            const order = ['day', 'evening', 'night3', 'holiday', 'thursday'];
+
+            // ساخت SVG
+            let cumulative = 0;
+            let segmentsSVG = '';
+            order.forEach(key => {
+                const h = summary[key].hours;
+                if (h === 0) return;
+                const percent = (h / totalHours) * 100;
+                const offset = 25 - cumulative;
+                segmentsSVG += `<circle class="donut-segment" cx="21" cy="21" r="15.9155"
+                    fill="transparent" stroke="${chartColors[key]}" stroke-width="4"
+                    stroke-dasharray="${percent.toFixed(3)} ${(100 - percent).toFixed(3)}"
+                    stroke-dashoffset="${offset.toFixed(3)}">
+                    <title>${chartLabels[key]}: ${h.toFixed(2)} ساعت (${percent.toFixed(1)}%)</title>
+                </circle>`;
+                cumulative += percent;
+            });
+
+            const svg = `
+                <div class="donut-wrapper">
+                    <svg viewBox="0 0 42 42" class="donut">
+                        <circle class="donut-ring" cx="21" cy="21" r="15.9155" fill="transparent" stroke-width="4"></circle>
+                        ${segmentsSVG}
+                        <text x="21" y="21" text-anchor="middle" dominant-baseline="middle" class="donut-text">
+                            <tspan x="21" dy="-1" class="donut-total">${totalHours.toFixed(1)}</tspan>
+                            <tspan x="21" dy="4" class="donut-label">ساعت</tspan>
+                        </text>
+                    </svg>
+                </div>`;
+
+            // ساخت Legend
+            let legendHTML = '<div class="chart-legend">';
+            order.forEach(key => {
+                const h = summary[key].hours;
+                const a = summary[key].amount;
+                if (h === 0) return;
+                const percent = (h / totalHours) * 100;
+                legendHTML += `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background:${chartColors[key]};"></div>
+                        <div class="legend-info">
+                            <span class="legend-name">${chartLabels[key]} <span style="color:#888;font-size:10px;">(${percent.toFixed(1)}%)</span></span>
+                            <span class="legend-details">
+                                <span class="legend-hours">${h.toFixed(2)} ساعت</span>
+                                <span class="legend-amount">${Math.round(a).toLocaleString('fa-IR')} تومان</span>
+                            </span>
+                        </div>
+                    </div>`;
+            });
+            legendHTML += '</div>';
+
+            container.innerHTML = svg + legendHTML;
         }
 
         function renderArchive() {
             const tbody = document.getElementById('archiveBody');
             tbody.innerHTML = '';
-            // گروه‌بندی رکوردها بر اساس دوره، بدون دوره جاری
             const periods = {};
             records.forEach(rec => {
                 if (rec.period !== currentPeriod) {
-                    if (!periods[rec.period]) {
-                        periods[rec.period] = { hours: 0, amount: 0 };
-                    }
+                    if (!periods[rec.period]) periods[rec.period] = { hours: 0, amount: 0 };
                     periods[rec.period].hours += rec.hours;
                     periods[rec.period].amount += rec.amount;
                 }
             });
             const sortedPeriods = Object.keys(periods).sort().reverse();
             if (sortedPeriods.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4">هنوز دوره‌ای بایگانی نشده است.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="color:#888;">هنوز دوره‌ای بایگانی نشده است.</td></tr>';
                 return;
             }
             sortedPeriods.forEach(period => {
@@ -946,11 +1090,8 @@
         function loadPeriod(period) {
             currentPeriod = period;
             saveCurrentPeriod();
-            // به‌روزرسانی انتخاب در dropdown
             periodSelect.value = period;
-            renderTable();
-            updateSummary();
-            renderArchive();
+            renderTable(); updateSummary(); renderChart(); renderArchive();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -975,16 +1116,15 @@
                     if (Array.isArray(imported)) {
                         records = imported;
                         records.forEach(rec => {
-                            if (!rec.period) {
+                            if (rec.shift === 'night') rec.shift = 'evening';
+                            if (rec.date) {
                                 const [y, m, d] = rec.date.split('/').map(Number);
                                 rec.period = getPeriodKey(y, m, d);
                             }
                         });
                         localStorage.setItem('overtimeRecords', JSON.stringify(records));
                         updatePeriodSelect();
-                        renderTable();
-                        updateSummary();
-                        renderArchive();
+                        renderTable(); updateSummary(); renderChart(); renderArchive();
                         alert('اطلاعات با موفقیت بازیابی شد.');
                     } else {
                         alert('فرمت فایل نادرست است.');
@@ -998,13 +1138,11 @@
         }
 
         function clearAll() {
-            if (confirm('همه رکوردها پاک شوند؟ این عمل غیرقابل بازگشت است.')) {
+            if (confirm('همه رکوردها پاک شوند؟')) {
                 records = [];
                 localStorage.removeItem('overtimeRecords');
                 updatePeriodSelect();
-                renderTable();
-                updateSummary();
-                renderArchive();
+                renderTable(); updateSummary(); renderChart(); renderArchive();
                 resetForm();
             }
         }
@@ -1013,6 +1151,7 @@
         updatePeriodSelect();
         renderTable();
         updateSummary();
+        renderChart();
         renderArchive();
     </script>
 </body>
