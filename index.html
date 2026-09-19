@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محاسبه اضافه کار</title>
+    <meta name="theme-color" content="#4a90e2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="اضافه کار">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css">
     <style>
         :root {
@@ -79,41 +86,18 @@
             border-color: var(--primary);
             box-shadow: 0 0 4px rgba(74,144,226,0.3);
         }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .form-grid .full { grid-column: 1 / -1; }
-        .date-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr auto;
-            gap: 6px;
-            align-items: end;
-        }
+        .date-grid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 6px; align-items: end; }
         .btn-today {
-            background: var(--secondary);
-            color: white;
-            border: none;
-            padding: 7px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            white-space: nowrap;
-            height: 34px;
+            background: var(--secondary); color: white; border: none;
+            padding: 7px 12px; border-radius: 6px; cursor: pointer;
+            font-size: 13px; white-space: nowrap; height: 34px;
         }
         .btn-today:hover { background: #5a6268; }
-
         button {
-            padding: 9px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s;
+            padding: 9px; background: var(--primary); color: white; border: none;
+            border-radius: 6px; font-size: 14px; cursor: pointer; transition: background 0.2s;
         }
         button:hover { background: #3a7bd5; }
         .btn-secondary { background: var(--secondary); }
@@ -122,186 +106,65 @@
         .btn-danger:hover { background: #c82333; }
         .btn-success { background: var(--success); }
         .btn-success:hover { background: #218838; }
-
-        .main-actions {
-            display: flex;
-            gap: 6px;
-            margin-top: 10px;
-        }
+        .main-actions { display: flex; gap: 6px; margin-top: 10px; }
         .main-actions button { flex: 1; }
-
         .result-bar {
-            margin-top: 8px;
-            background: #e9ecef;
-            padding: 8px 12px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-around;
-            font-size: 13px;
+            margin-top: 8px; background: #e9ecef; padding: 8px 12px;
+            border-radius: 6px; display: flex; justify-content: space-around; font-size: 13px;
         }
         .result-bar span { font-weight: bold; color: var(--primary); }
-
-        .summary-chips {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin: 6px 0;
-        }
+        .summary-chips { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
         .summary-chip {
-            background: var(--light-bg);
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            border: 1px solid var(--border);
-            display: flex;
-            gap: 6px;
-            align-items: center;
+            background: var(--light-bg); padding: 5px 10px; border-radius: 20px;
+            font-size: 12px; border: 1px solid var(--border);
+            display: flex; gap: 6px; align-items: center;
         }
         .summary-chip .name { font-weight: bold; color: var(--primary); }
         .summary-chip .val { color: #555; }
-
-        /* ================== نمودار ================== */
         .chart-container {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            padding: 10px;
-            background: var(--light-bg);
-            border-radius: 8px;
-            margin-top: 6px;
-            flex-wrap: wrap;
+            display: flex; gap: 15px; align-items: center;
+            padding: 10px; background: var(--light-bg); border-radius: 8px;
+            margin-top: 6px; flex-wrap: wrap;
         }
-        .donut-wrapper {
-            flex: 0 0 160px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .donut {
-            width: 100%;
-            max-width: 160px;
-            height: auto;
-        }
-        .donut-ring {
-            stroke: #e9ecef;
-        }
-        .donut-segment {
-            transition: stroke-dasharray 0.5s ease;
-        }
-        .donut-text {
-            font-family: 'Vazir', Tahoma, sans-serif;
-        }
-        .donut-total {
-            font-size: 6px;
-            font-weight: bold;
-            fill: var(--primary);
-        }
-        .donut-label {
-            font-size: 3px;
-            fill: #888;
-        }
-        .chart-legend {
-            flex: 1;
-            min-width: 180px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+        .donut-wrapper { flex: 0 0 160px; display: flex; justify-content: center; align-items: center; }
+        .donut { width: 100%; max-width: 160px; height: auto; }
+        .donut-ring { stroke: #e9ecef; }
+        .donut-segment { transition: stroke-dasharray 0.5s ease; }
+        .donut-text { font-family: 'Vazir', Tahoma, sans-serif; }
+        .donut-total { font-size: 6px; font-weight: bold; fill: var(--primary); }
+        .donut-label { font-size: 3px; fill: #888; }
+        .chart-legend { flex: 1; min-width: 180px; display: flex; flex-direction: column; gap: 6px; }
         .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 8px;
-            background: white;
-            border-radius: 6px;
-            font-size: 12px;
-            border: 1px solid var(--border);
+            display: flex; align-items: center; gap: 8px;
+            padding: 5px 8px; background: white; border-radius: 6px;
+            font-size: 12px; border: 1px solid var(--border);
         }
-        .legend-color {
-            width: 14px;
-            height: 14px;
-            border-radius: 4px;
-            flex-shrink: 0;
-        }
-        .legend-info {
-            flex: 1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .legend-name {
-            font-weight: bold;
-            color: #333;
-        }
-        .legend-details {
-            display: flex;
-            gap: 8px;
-            font-size: 11px;
-            color: #666;
-        }
-        .legend-hours {
-            color: var(--primary);
-            font-weight: bold;
-        }
-        .legend-amount {
-            color: var(--success);
-            font-weight: bold;
-        }
-        .chart-empty {
-            color: #888;
-            text-align: center;
-            padding: 20px;
-            font-size: 13px;
-            width: 100%;
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-            margin-top: 8px;
-        }
+        .legend-color { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+        .legend-info { flex: 1; display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .legend-name { font-weight: bold; color: #333; }
+        .legend-details { display: flex; gap: 8px; font-size: 11px; color: #666; }
+        .legend-hours { color: var(--primary); font-weight: bold; }
+        .legend-amount { color: var(--success); font-weight: bold; }
+        .chart-empty { color: #888; text-align: center; padding: 20px; font-size: 13px; width: 100%; }
+        .table-wrapper { overflow-x: auto; margin-top: 8px; }
         table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 6px;
-            overflow: hidden;
-            font-size: 13px;
+            width: 100%; border-collapse: collapse; background: white;
+            border-radius: 6px; overflow: hidden; font-size: 13px;
         }
-        th, td {
-            border: 1px solid var(--border);
-            padding: 6px;
-            text-align: center;
-        }
-        th {
-            background: var(--primary);
-            color: white;
-            font-weight: normal;
-        }
+        th, td { border: 1px solid var(--border); padding: 6px; text-align: center; }
+        th { background: var(--primary); color: white; font-weight: normal; }
         tr:nth-child(even) { background-color: #f2f2f2; }
         .holiday-row { background-color: #ffe6e6 !important; }
-
         .total-bar {
-            margin-top: 10px;
-            font-weight: bold;
-            text-align: center;
-            font-size: 14px;
-            background: #e9ecef;
-            padding: 10px;
-            border-radius: 6px;
-            position: sticky;
-            bottom: 5px;
+            margin-top: 10px; font-weight: bold; text-align: center;
+            font-size: 14px; background: #e9ecef; padding: 10px;
+            border-radius: 6px; position: sticky; bottom: 5px;
             box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
         }
-
         .action-btns { display: flex; gap: 3px; justify-content: center; }
         .edit-btn, .delete-btn, .view-btn {
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
+            border: none; padding: 4px 8px; border-radius: 4px;
+            cursor: pointer; font-size: 12px;
         }
         .edit-btn { background: var(--warning); color: #000; }
         .edit-btn:hover { background: #e0a800; }
@@ -309,81 +172,123 @@
         .delete-btn:hover { background: #c82333; }
         .view-btn { background: var(--primary); color: white; }
         .view-btn:hover { background: #3a7bd5; }
-
         details {
-            margin-top: 8px;
-            background: var(--light-bg);
-            border-radius: 6px;
-            padding: 0;
-            border: 1px solid var(--border);
+            margin-top: 8px; background: var(--light-bg);
+            border-radius: 6px; padding: 0; border: 1px solid var(--border);
         }
         details[open] { padding-bottom: 10px; }
         details summary {
-            cursor: pointer;
-            padding: 8px 12px;
-            font-weight: bold;
-            font-size: 13px;
-            color: #555;
-            user-select: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border-radius: 6px;
+            cursor: pointer; padding: 8px 12px; font-weight: bold;
+            font-size: 13px; color: #555; user-select: none;
+            display: flex; align-items: center; gap: 6px; border-radius: 6px;
         }
         details summary:hover { background: #e9ecef; }
         details summary::-webkit-details-marker { color: var(--primary); }
         details > *:not(summary) { padding: 0 12px; }
-
-        .inline-fields {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .inline-fields > div {
-            flex: 1;
-            min-width: 120px;
-        }
-
+        .inline-fields { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .inline-fields > div { flex: 1; min-width: 120px; }
         .period-row {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 8px;
-            align-items: center;
-            margin-bottom: 8px;
+            display: grid; grid-template-columns: auto 1fr auto;
+            gap: 8px; align-items: center; margin-bottom: 8px;
         }
-        .period-row label {
-            margin: 0;
-            white-space: nowrap;
-        }
+        .period-row label { margin: 0; white-space: nowrap; }
         .period-row select { margin: 0; }
-        .period-row button {
-            white-space: nowrap;
-            padding: 7px 12px;
-            font-size: 13px;
-        }
-
-        .file-actions {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
+        .period-row button { white-space: nowrap; padding: 7px 12px; font-size: 13px; }
+        .file-actions { display: flex; gap: 6px; flex-wrap: wrap; }
         .file-actions button, .file-actions label {
-            flex: 1;
-            min-width: 90px;
-            text-align: center;
+            flex: 1; min-width: 90px; text-align: center;
         }
         .file-actions input[type="file"] { display: none; }
         .file-label {
-            background: var(--secondary);
-            color: white;
-            padding: 9px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-            font-size: 13px;
+            background: var(--secondary); color: white; padding: 9px;
+            border-radius: 6px; cursor: pointer; text-align: center; font-size: 13px;
         }
         .file-label:hover { background: #5a6268; }
+
+        /* ================== مودال خوش‌آمدگویی ================== */
+        .welcome-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.55);
+            display: none; justify-content: center; align-items: center;
+            z-index: 1000; padding: 15px; animation: fadeIn 0.3s ease;
+        }
+        .welcome-overlay.show { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .welcome-modal {
+            background: white; border-radius: 16px; max-width: 420px;
+            width: 100%; padding: 22px 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.4s ease; text-align: center;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .welcome-icon {
+            font-size: 50px; margin-bottom: 10px; display: block;
+            animation: bounce 1.5s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .welcome-modal h3 { margin: 0 0 12px 0; color: var(--primary); font-size: 19px; }
+        .welcome-modal p {
+            font-size: 14px; line-height: 1.9; color: #555;
+            margin: 10px 0; text-align: right;
+        }
+        .welcome-instructions {
+            background: var(--light-bg); border-radius: 10px;
+            padding: 14px; margin: 15px 0; text-align: right;
+        }
+        .welcome-instructions .step {
+            display: flex; align-items: flex-start; gap: 10px;
+            margin: 10px 0; font-size: 13px; line-height: 1.7; color: #444;
+        }
+        .welcome-instructions .step-icon {
+            font-size: 20px; flex-shrink: 0; line-height: 1; margin-top: 2px;
+        }
+        .welcome-instructions .step-text { flex: 1; }
+        .welcome-instructions .step-text b { color: var(--primary); }
+        .welcome-actions { display: flex; gap: 8px; margin-top: 10px; }
+        .welcome-actions button { flex: 1; padding: 12px; font-size: 14px; }
+        .btn-close-welcome {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .btn-close-welcome:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4194 100%);
+        }
+        .welcome-hint { font-size: 11px; color: #999; margin-top: 10px; line-height: 1.6; }
+
+        /* ================== دکمه شناور نصب ================== */
+        .install-float-btn {
+            position: fixed;
+            bottom: 18px;
+            left: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            animation: pulse 2s infinite;
+            font-family: 'Vazir', Tahoma, sans-serif;
+        }
+        .install-float-btn:hover {
+            transform: scale(1.05);
+            transition: transform 0.2s;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5); }
+            50% { box-shadow: 0 6px 30px rgba(102, 126, 234, 0.8); }
+        }
 
         @media (max-width: 600px) {
             body { padding: 5px; }
@@ -399,21 +304,52 @@
             .period-row button { width: 100%; }
             .chart-container { flex-direction: column; }
             .donut-wrapper { flex: none; }
+            .welcome-modal { padding: 18px 15px; }
+            .welcome-icon { font-size: 42px; }
+            .welcome-modal h3 { font-size: 17px; }
+            .welcome-modal p { font-size: 13px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- دکمه شناور نصب -->
+    <button id="installBtnFloat" class="install-float-btn" onclick="installApp()">
+        📲 نصب برنامه
+    </button>
+
+    <!-- مودال خوش‌آمدگویی -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-modal">
+            <span class="welcome-icon">📱</span>
+            <h3>به برنامه محاسبه اضافه کار خوش آمدید! 🎉</h3>
+            <p id="welcomeIntro">
+                برای اینکه این برنامه رو مثل یک اپلیکیشن واقعی روی گوشی یا سیستمتون نصب کنید،
+                کافیه چند ثانیه وقت بذارید. 👇
+            </p>
+            <div class="welcome-instructions" id="welcomeInstructions">
+                <!-- محتوای دستورالعمل توسط JS پر می‌شود -->
+            </div>
+            <div class="welcome-actions">
+                <button class="btn-close-welcome" onclick="closeWelcome()">
+                    👍 فهمیدم، ادامه بده
+                </button>
+            </div>
+            <div class="welcome-hint">
+                این پیام فقط یک بار نمایش داده می‌شود.
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <h2>🧮 محاسبه اضافه کار</h2>
 
-        <!-- انتخاب دوره ماهانه -->
         <div class="period-row">
             <label>📅 دوره:</label>
             <select id="periodSelect" onchange="onPeriodChange()"></select>
             <button class="btn-success" onclick="archiveAndStartNew()">📦 بایگانی و دوره جدید</button>
         </div>
 
-        <!-- فرم ثبت -->
         <div class="section-title">📝 ثبت رکورد جدید</div>
 
         <div class="date-grid">
@@ -436,13 +372,10 @@
             </div>
         </div>
 
-        <!-- گزینه‌های پیشرفته (شامل نرخ اضافه‌کار) -->
         <details>
             <summary>⚙️ گزینه‌های پیشرفته (اختیاری)</summary>
-
             <label>💰 نرخ هر ساعت اضافه‌کار (تومان):</label>
             <input type="number" id="rateInput" value="123000" step="1000" min="0" onchange="updateRate()">
-
             <label style="margin-top:8px;">⏰ ساعت ورود و خروج:</label>
             <div class="inline-fields">
                 <div>
@@ -454,12 +387,10 @@
                     <input type="time" id="endTime">
                 </div>
             </div>
-
             <div id="holidayHoursDiv" style="display:none;margin-top:6px;">
                 <label>⏱ ساعت کار در این روز:</label>
                 <input type="number" id="holidayHours" value="8.5" step="0.5" min="0">
             </div>
-
             <div style="margin-top:6px;">
                 <label>✍️ ساعت اضافه‌کار دستی:</label>
                 <input type="number" id="manualHours" value="" placeholder="مثلاً 3.5" step="0.5" min="0">
@@ -471,23 +402,19 @@
             <button id="cancelEditBtn" onclick="cancelEdit()" class="btn-secondary" style="display:none;">لغو ویرایش</button>
         </div>
 
-        <!-- نوار نتیجه کوچک -->
         <div class="result-bar">
             <div>ساعت اضافه‌کار: <span id="hoursDisplay">2</span></div>
             <div>مبلغ: <span id="amountDisplay">246,000</span> تومان</div>
         </div>
 
-        <!-- نمودار گزارش -->
         <div class="section-title">📈 نمودار گزارش دوره</div>
         <div class="chart-container" id="chartContainer">
             <div class="chart-empty">هنوز رکوردی ثبت نشده است.</div>
         </div>
 
-        <!-- خلاصه آماری فشرده -->
         <div class="section-title">📊 خلاصه دوره</div>
         <div class="summary-chips" id="summaryGrid"></div>
 
-        <!-- جدول رکوردها -->
         <div class="section-title">📋 رکوردهای دوره</div>
         <div class="table-wrapper">
             <table>
@@ -505,10 +432,8 @@
             </table>
         </div>
 
-        <!-- مجموع کل چسبیده به پایین -->
         <div class="total-bar" id="totalDisplay">مجموع: ۰</div>
 
-        <!-- بایگانی (جمع‌شونده) -->
         <details>
             <summary>🗄 بایگانی دوره‌ها</summary>
             <div class="table-wrapper">
@@ -526,7 +451,6 @@
             </div>
         </details>
 
-        <!-- تنظیمات (جمع‌شونده، بدون نرخ) -->
         <details>
             <summary>💾 پشتیبان‌گیری و بازیابی</summary>
             <div class="file-actions" style="margin-top:8px;">
@@ -539,6 +463,161 @@
     </div>
 
     <script>
+        // ================== ثبت Service Worker ==================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => console.log('✅ Service Worker ثبت شد:', reg.scope))
+                    .catch(err => console.log('❌ خطا در ثبت SW:', err));
+            });
+        }
+
+        // ================== مدیریت دکمه نصب ==================
+        let deferredPrompt = null;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('✅ beforeinstallprompt فعال شد');
+            document.getElementById('installBtnFloat').style.display = 'flex';
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('✅ برنامه نصب شد');
+            deferredPrompt = null;
+            document.getElementById('installBtnFloat').style.display = 'none';
+            localStorage.setItem('welcomeShown', 'true');
+        });
+
+        function installApp() {
+            if (!deferredPrompt) {
+                alert('مرورگر شما در حال حاضر از نصب خودکار پشتیبانی نمی‌کند.\nلطفاً از منوی مرورگر گزینه "افزودن به صفحه اصلی" را انتخاب کنید.');
+                return;
+            }
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('کاربر نصب را پذیرفت');
+                } else {
+                    console.log('کاربر نصب را رد کرد');
+                }
+                deferredPrompt = null;
+                document.getElementById('installBtnFloat').style.display = 'none';
+            });
+        }
+
+        // ================== مودال خوش‌آمدگویی ==================
+        (function initWelcome() {
+            const hasSeen = localStorage.getItem('welcomeShown');
+            if (!hasSeen) {
+                setTimeout(() => {
+                    document.getElementById('welcomeOverlay').classList.add('show');
+                    customizeWelcomeMessage();
+                }, 800);
+            }
+        })();
+
+        function customizeWelcomeMessage() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const isAndroid = /Android/.test(navigator.userAgent);
+            const instructionsDiv = document.getElementById('welcomeInstructions');
+            const introP = document.getElementById('welcomeIntro');
+
+            if (isIOS) {
+                introP.innerHTML = 'برای نصب این برنامه روی آیفون یا آیپد، این مراحل رو دنبال کنید 👇';
+                instructionsDiv.innerHTML = `
+                    <div class="step">
+                        <span class="step-icon">📤</span>
+                        <span class="step-text">
+                            در پایین صفحه، روی دکمه‌ی <b>اشتراک‌گذاری (Share)</b> (مربع با فلش رو به بالا) کلیک کنید.
+                        </span>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">➕</span>
+                        <span class="step-text">
+                            در منوی باز شده، گزینه‌ی <b>«Add to Home Screen»</b> یا <b>«افزودن به صفحه اصلی»</b> را انتخاب کنید.
+                        </span>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">✅</span>
+                        <span class="step-text">
+                            در بالای صفحه روی <b>«Add»</b> یا <b>«افزودن»</b> بزنید. تمام! 🎊
+                        </span>
+                    </div>
+                `;
+            } else if (isAndroid) {
+                introP.innerHTML = 'برای نصب این برنامه روی اندروید، این مراحل رو دنبال کنید 👇';
+                instructionsDiv.innerHTML = `
+                    <div class="step">
+                        <span class="step-icon">📲</span>
+                        <span class="step-text">
+                            اگر دکمه‌ی بنفش <b>«📲 نصب برنامه»</b> در پایین صفحه ظاهر شد، روی همان کلیک کنید.
+                        </span>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">☰</span>
+                        <span class="step-text">
+                            در غیر این صورت، روی منوی <b>سه نقطه (⋮)</b> در بالای مرورگر کلیک کنید.
+                        </span>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">⬇️</span>
+                        <span class="step-text">
+                            گزینه‌ی <b>«Install app»</b> یا <b>«نصب برنامه»</b> یا <b>«Add to Home screen»</b> را انتخاب کنید.
+                        </span>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">✅</span>
+                        <span class="step-text">
+                            تأیید کنید. تمام! 🎊
+                        </span>
+                    </div>
+                `;
+            } else {
+                // دسکتاپ یا سایر
+                introP.innerHTML = 'برای نصب این برنامه روی سیستم، این مراحل رو دنبال کنید 👇';
+                instructionsDiv.innerHTML = `
+                    <div class="step">
+                        <span class="step-icon">📲</span>
+                        <span class="step-text">
+                            اگر دکمه‌ی بنفش <b>«📲 نصب برنامه»</b> در پایین صفحه ظاهر شد، روی همان کلیک کنید.
+                        </span>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">☰</span>
+                        <span class="step-text">
+                            در غیر این صورت، در نوار آدرس مرورگر (کروم یا اج) روی آیکون <b>⊕ نصب</b> کلیک کنید.
+                        </span>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">⋮</span>
+                        <span class="step-text">
+                            یا از منوی <b>سه نقطه</b>، گزینه‌ی <b>«Install»</b> یا <b>«Install page as app»</b> یا <b>«نصب برنامه»</b> را انتخاب کنید.
+                        </span>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">✅</span>
+                        <span class="step-text">
+                            تأیید کنید. تمام! 🎊
+                        </span>
+                    </div>
+                `;
+            }
+        }
+
+        function closeWelcome() {
+            document.getElementById('welcomeOverlay').classList.remove('show');
+            localStorage.setItem('welcomeShown', 'true');
+        }
+
+        document.getElementById('welcomeOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeWelcome();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeWelcome();
+        });
+
         // ================== توابع تبدیل تاریخ شمسی ==================
         function gregorianToJalali(gy, gm, gd) {
             var g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
@@ -592,6 +671,14 @@
                 return `${nextYear}/${String(nextMonth).padStart(2, '0')}`;
             }
             return `${year}/${String(month).padStart(2, '0')}`;
+        }
+
+        function getNextPeriodKey(periodKey) {
+            const [y, m] = periodKey.split('/').map(Number);
+            let nextMonth = m + 1;
+            let nextYear = y;
+            if (nextMonth > 12) { nextMonth = 1; nextYear++; }
+            return `${nextYear}/${String(nextMonth).padStart(2, '0')}`;
         }
 
         function getTodayPeriodKey() {
@@ -683,12 +770,41 @@
             renderTable(); updateSummary(); renderChart(); renderArchive();
         }
 
+        // ========== تابع بایگانی (اصلاح‌شده) ==========
         function archiveAndStartNew() {
-            if (confirm('آیا مطمئن هستید؟ دوره جاری بایگانی شده و دوره جدید آغاز می‌شود.')) {
-                currentPeriod = getTodayPeriodKey();
+            const currentRecords = getFilteredRecords();
+            if (currentRecords.length === 0) {
+                alert('⚠️ دوره جاری خالی است و قابل بایگانی نیست.\nابتدا حداقل یک رکورد ثبت کنید.');
+                return;
+            }
+
+            const totalHours = currentRecords.reduce((sum, r) => sum + r.hours, 0);
+            const totalAmount = currentRecords.reduce((sum, r) => sum + r.amount, 0);
+
+            const msg = `آیا مطمئن هستید؟\n\n` +
+                `📦 دوره "${getPeriodLabel(currentPeriod)}" بایگانی می‌شود.\n` +
+                `⏱ مجموع ساعت: ${totalHours.toFixed(2)}\n` +
+                `💰 مجموع مبلغ: ${Math.round(totalAmount).toLocaleString('fa-IR')} تومان\n\n` +
+                `✅ سپس دوره جدید آغاز می‌شود و لیست خالی خواهد شد.`;
+
+            if (confirm(msg)) {
+                // دوره جاری بایگانی می‌شود (فقط با تغییر دوره جاری به دوره بعد)
+                const oldPeriod = currentPeriod;
+                currentPeriod = getNextPeriodKey(currentPeriod);
                 saveCurrentPeriod();
                 updatePeriodSelect();
                 renderTable(); updateSummary(); renderChart(); renderArchive();
+
+                // پیام موفقیت
+                alert(`✅ دوره "${getPeriodLabel(oldPeriod)}" با موفقیت بایگانی شد.\n\n🎉 دوره جدید: "${getPeriodLabel(currentPeriod)}"\n\nبرای مشاهده دوره بایگانی‌شده، بخش «🗄 بایگانی دوره‌ها» را باز کنید.`);
+
+                // باز کردن خودکار بخش بایگانی
+                const archiveDetails = document.querySelectorAll('details');
+                archiveDetails.forEach(d => {
+                    if (d.querySelector('summary').textContent.includes('بایگانی')) {
+                        d.open = true;
+                    }
+                });
             }
         }
 
@@ -959,20 +1075,13 @@
             }
         }
 
-        // ================== نمودار گزارش ==================
         const chartColors = {
-            day: '#4a90e2',
-            evening: '#28a745',
-            night3: '#6f42c1',
-            holiday: '#dc3545',
-            thursday: '#fd7e14'
+            day: '#4a90e2', evening: '#28a745', night3: '#6f42c1',
+            holiday: '#dc3545', thursday: '#fd7e14'
         };
         const chartLabels = {
-            day: 'روز',
-            evening: 'عصر ۲',
-            night3: 'شب ۳',
-            holiday: 'تعطیل',
-            thursday: 'پنجشنبه'
+            day: 'روز', evening: 'عصر ۲', night3: 'شب ۳',
+            holiday: 'تعطیل', thursday: 'پنجشنبه'
         };
 
         function renderChart() {
@@ -985,10 +1094,8 @@
             }
 
             const summary = {
-                day: { hours: 0, amount: 0 },
-                evening: { hours: 0, amount: 0 },
-                night3: { hours: 0, amount: 0 },
-                holiday: { hours: 0, amount: 0 },
+                day: { hours: 0, amount: 0 }, evening: { hours: 0, amount: 0 },
+                night3: { hours: 0, amount: 0 }, holiday: { hours: 0, amount: 0 },
                 thursday: { hours: 0, amount: 0 }
             };
             filteredRecords.forEach(rec => {
@@ -1005,8 +1112,6 @@
             }
 
             const order = ['day', 'evening', 'night3', 'holiday', 'thursday'];
-
-            // ساخت SVG
             let cumulative = 0;
             let segmentsSVG = '';
             order.forEach(key => {
@@ -1035,7 +1140,6 @@
                     </svg>
                 </div>`;
 
-            // ساخت Legend
             let legendHTML = '<div class="chart-legend">';
             order.forEach(key => {
                 const h = summary[key].hours;
@@ -1055,7 +1159,6 @@
                     </div>`;
             });
             legendHTML += '</div>';
-
             container.innerHTML = svg + legendHTML;
         }
 
@@ -1065,9 +1168,10 @@
             const periods = {};
             records.forEach(rec => {
                 if (rec.period !== currentPeriod) {
-                    if (!periods[rec.period]) periods[rec.period] = { hours: 0, amount: 0 };
+                    if (!periods[rec.period]) periods[rec.period] = { hours: 0, amount: 0, count: 0 };
                     periods[rec.period].hours += rec.hours;
                     periods[rec.period].amount += rec.amount;
+                    periods[rec.period].count += 1;
                 }
             });
             const sortedPeriods = Object.keys(periods).sort().reverse();
